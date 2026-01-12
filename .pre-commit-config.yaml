@@ -1,0 +1,101 @@
+---
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+        args: [--maxkb=4096]
+      - id: check-ast
+      - id: fix-byte-order-marker
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-executables-have-shebangs
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-xml
+      - id: check-yaml
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: no-commit-to-branch
+        args: [--branch, main]
+
+  - repo: https://github.com/rvben/rumdl-pre-commit
+    rev: v0.0.214
+    hooks:
+      - id: rumdl
+        args: [--fix]
+
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+        args: [--format, parsable, --strict]
+
+  - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
+    rev: 0.2.3
+    hooks:
+      - id: yamlfmt
+        args: [--mapping, '2', --sequence, '4', --offset, '2']
+
+  - repo: https://github.com/tombi-toml/tombi-pre-commit
+    rev: v0.7.18
+    hooks:
+      - id: tombi-format
+        args: [--offline]
+      - id: tombi-lint
+        args: [--offline]
+
+  - repo: https://github.com/biomejs/pre-commit
+    rev: v2.3.11
+    hooks:
+      - id: biome-check
+
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.9.24
+    hooks:
+      - id: uv-lock
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.10
+    hooks:
+      - id: actionlint
+
+  - repo: https://github.com/woodruffw/zizmor-pre-commit
+    rev: v1.20.0
+    hooks:
+      - id: zizmor
+
+  - repo: https://github.com/renovatebot/pre-commit-hooks
+    rev: 42.79.1
+    hooks:
+      - id: renovate-config-validator
+        args: [--strict]
+
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff
+        entry: uv run ruff check --force-exclude --exit-non-zero-on-fix
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+      - id: ruff-format
+        name: ruff-format
+        entry: uv run ruff format --force-exclude
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+      - id: django-upgrade
+        name: django-upgrade
+        entry: uv run django-upgrade --target-version 6.0
+        language: system
+        types: [python]
+      - id: deptry
+        name: deptry
+        description: deptry is a command line tool to check for issues with dependencies in a Python project, such as unused or missing dependencies.
+        entry: uv run deptry src
+        language: system
+        always_run: true
+        pass_filenames: false
