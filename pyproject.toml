@@ -1,0 +1,91 @@
+[project]
+name = "dailyword"
+version = "0.1.0"
+description = "A Django project for daily word tracking"
+requires-python = "==3.14.*"
+dependencies = [
+  "django==6.0.1",
+  "environs[django]==14.5.0",
+  "whitenoise[brotli]==6.11.0",
+]
+
+[dependency-groups]
+dev = [
+  "deptry==0.24.0",
+  "django-coverage-plugin==3.2.0",
+  "django-upgrade==1.29.1",
+  "pytest==9.0.2",
+  "pytest-cov==7.0.0",
+  "pytest-django==4.11.1",
+  "ruff==0.14.11",
+]
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.coverage.run]
+core = "ctrace"  # ctrace is needed to use plugins
+branch = true
+plugins = ["django_coverage_plugin"]
+omit = [".venv/*"]
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.deptry.per_rule_ignores]
+DEP002 = [
+  "psycopg",
+  "whitenoise",
+]
+
+[tool.pytest]
+DJANGO_SETTINGS_MODULE = "config.settings"
+FAIL_INVALID_TEMPLATE_VARS = true
+filterwarnings = [
+  "error",  # fail on warnings
+  "ignore::pytest.PytestUnraisableExceptionWarning",
+]
+
+[tool.ruff]
+[tool.ruff.lint]
+select = [
+  "F",  # Pyflakes
+  "E",  # pycodestyle
+  "W",  # pycodestyle
+  "I",  # isort
+  "UP",  # pyupgrade
+  "B",  # flake8-bugbear
+  "C4",  # flake8-comprehensions
+  "T10",  # flake8-debugger
+  "DJ",  # flake8-django
+  "INP",  # flake8-no-pep420
+  "T20",  # flake8-print
+  "SIM",  # flake8-simplify
+  "INT",  # flake8-gettext
+  "PGH",  # pygrep-hooks
+  "PLC",  # pylint conventions
+  "PLE",  # pylint errors
+  "PLW",  # pylint warnings
+  "FLY",  # flynt
+  "RUF",  # Ruff-specific rules
+]
+ignore = [
+  "E501",  # ignore line length (let ruff format handle it)
+  "SIM102",  # nested ifs are sometimes clearer
+  "SIM103",  # don't always return the negation of a return value, allow if (..): return False at the end
+  "SIM105",  # contextlib.suppress(Exception) is not that clearer than try/except pass
+  "RUF010",  # f"{x!s}" is really not clearer than f"{str(x)}"
+  "RUF012",
+]
+
+[tool.ruff.format]
+line-ending = "lf"
+
+[tool.rumdl]
+disable = [
+  "MD013",  # line length
+]
+
+[tool.uv]
+add-bounds = "exact"  # having exact versions in pyproject.toml works better with renovatebot to have clearer PRs
