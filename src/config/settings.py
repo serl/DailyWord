@@ -23,7 +23,7 @@ CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 CSRF_USE_SESSIONS = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
-if BASE_URL.scheme == "https":
+if BASE_URL.scheme == "https":  # pragma: no cover
     SECURE_HSTS_SECONDS = 2592000
     SECURE_SSL_REDIRECT = True
     SECURE_SSL_HOST = BASE_URL.hostname
