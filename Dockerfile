@@ -38,4 +38,7 @@ USER app
 
 EXPOSE 8000
 
+HEALTHCHECK --interval=5s --timeout=5s --start-period=5s --retries=10 \
+    CMD curl --fail http://localhost:8000/ || exit 1
+
 CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2", "--chdir", "src"]
