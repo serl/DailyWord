@@ -30,6 +30,7 @@ COPY src/ ./src/
 
 RUN django-admin collectstatic --noinput
 RUN django-admin compilemessages
+RUN django-admin check
 
 USER app
 
