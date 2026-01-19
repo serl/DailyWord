@@ -28,8 +28,9 @@ if BASE_URL.scheme == "https":  # pragma: no cover
     SECURE_SSL_REDIRECT = True
     SECURE_SSL_HOST = BASE_URL.hostname
     SESSION_COOKIE_SECURE = True
-    # https://docs.djangoproject.com/en/6.0/ref/settings/#std-setting-SECURE_PROXY_SSL_HEADER
-    # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    if env.bool("SECURE_PROXY_SSL_HEADER", default=False):
+        # https://docs.djangoproject.com/en/6.0/ref/settings/#std-setting-SECURE_PROXY_SSL_HEADER
+        SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 SILENCED_SYSTEM_CHECKS = [
     "security.W005",  # HSTS on subdomains. We're not ready yet.
