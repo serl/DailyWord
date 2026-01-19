@@ -6,6 +6,7 @@ requires-python = "==3.14.*"
 dependencies = [
   "django==6.0.1",
   "environs[django]==14.5.0",
+  "gunicorn==23.0.0",
   "whitenoise[brotli]==6.11.0",
 ]
 
@@ -37,6 +38,7 @@ show_missing = true
 DEP002 = [
   "psycopg",
   "whitenoise",
+  "gunicorn",
 ]
 
 [tool.pytest]
