@@ -41,9 +41,3 @@ Use the provided `Dockerfile` to build and deploy the application.
 Set the environment variables as in `.env.example`.
 
 Exposed port: `8000`.
-
-After deploy, run database migrations:
-
-```bash
-django-admin migrate
-```
