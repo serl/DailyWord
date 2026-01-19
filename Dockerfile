@@ -29,6 +29,8 @@ RUN useradd --create-home --shell /bin/bash app
 COPY --from=deps /app/.venv /app/.venv
 
 COPY src/ ./src/
+COPY entrypoint.sh ./
+RUN chmod +x entrypoint.sh
 
 RUN django-admin collectstatic --noinput
 RUN django-admin compilemessages
@@ -41,4 +43,5 @@ EXPOSE 8000
 HEALTHCHECK --interval=5s --timeout=5s --start-period=5s --retries=10 \
     CMD curl --fail http://localhost:8000/ || exit 1
 
+ENTRYPOINT ["./entrypoint.sh"]
 CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2", "--chdir", "src"]
