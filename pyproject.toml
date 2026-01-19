@@ -7,6 +7,7 @@ dependencies = [
   "django==6.0.1",
   "environs[django]==14.5.0",
   "gunicorn==23.0.0",
+  "psycopg[binary]==3.3.2",
   "whitenoise[brotli]==6.11.0",
 ]
 
