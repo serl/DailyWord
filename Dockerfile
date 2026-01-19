@@ -26,6 +26,7 @@ COPY --from=deps /app/.venv /app/.venv
 COPY src/ ./src/
 
 RUN django-admin collectstatic --noinput
+RUN django-admin compilemessages
 
 USER app
 
