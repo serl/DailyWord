@@ -1,0 +1,24 @@
+.git/
+**/.gitignore
+.envrc
+
+# .gitignore contents
+**/*.egg-info/
+.venv
+staticfiles/
+db.sqlite3*
+.coverage
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing/CI
+.*_cache/
+
+# Other
+*.md
+renovate.json
+biome.json
