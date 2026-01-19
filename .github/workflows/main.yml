@@ -55,7 +55,7 @@ jobs:
 
     env:
       DJANGO_SETTINGS_MODULE: config.settings
-      DATABASE_URL: postgres://postgres:postgresOOO@localhost:5432/test
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/test
 
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
