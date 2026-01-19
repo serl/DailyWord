@@ -18,7 +18,7 @@ DEBUG = env.bool("DJANGO_DEBUG", default=False)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env.str("SECRET_KEY", "django-insecure-vv-293486")
 
-ALLOWED_HOSTS = [BASE_URL.hostname]
+ALLOWED_HOSTS = ["localhost", BASE_URL.hostname]
 CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 CSRF_USE_SESSIONS = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
