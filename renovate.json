@@ -3,7 +3,8 @@
   "extends": ["local>serl/renovate-config"],
   "packageRules": [
     {
-      "matchPackageNames": ["django"],
+      "description": "We update these packages manually",
+      "matchPackageNames": ["django", "postgres"],
       "matchUpdateTypes": ["major", "minor"],
       "enabled": false
     }
