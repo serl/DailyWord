@@ -19,6 +19,9 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 FROM base AS final
 
+RUN apt-get update && apt-get install -y --no-install-recommends gettext \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN useradd --create-home --shell /bin/bash app
 
 COPY --from=deps /app/.venv /app/.venv
@@ -26,6 +29,8 @@ COPY --from=deps /app/.venv /app/.venv
 COPY src/ ./src/
 
 RUN django-admin collectstatic --noinput
+RUN django-admin compilemessages
+RUN django-admin check
 
 USER app
 
