@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "A Django project for daily word tracking"
 requires-python = "==3.14.*"
 dependencies = [
-  "django==6.0.1",
+  "django==6.0.2",
   "environs[django]==14.5.0",
   "gunicorn==23.0.0",
   "psycopg[binary]==3.3.2",
