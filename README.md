@@ -11,6 +11,22 @@ A Django application for learning new words with AI-generated definitions and im
 
 ## Setup
 
+### System Dependencies
+
+The word image generation uses Cairo for SVG to PNG conversion.
+
+**macOS:**
+
+```bash
+brew install cairo
+```
+
+**Ubuntu/Debian:**
+
+```bash
+apt-get install libcairo2
+```
+
 ### Install Dependencies
 
 Using `uv`:
