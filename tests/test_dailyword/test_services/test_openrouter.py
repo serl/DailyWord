@@ -114,13 +114,12 @@ class TestGenerateWordList:
         with patch.object(
             service, "_make_request", return_value=mock_response
         ) as mock_req:
-            service.generate_word_list("cooking", count=5, difficulty="advanced")
+            service.generate_word_list("cooking", count=5)
 
         call_args = mock_req.call_args[0][0]
         content = call_args["messages"][0]["content"]
         assert "5" in content
         assert "cooking" in content
-        assert "advanced" in content
 
     def test_generate_word_list_empty_result(self, service):
         mock_response = {"choices": [{"message": {"content": json.dumps({})}}]}

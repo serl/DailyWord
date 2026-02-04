@@ -115,23 +115,6 @@ class TestWord:
     def test_str(self, word):
         assert str(word) == "Example (Test Dictionary)"
 
-    def test_auto_slug_generation(self, dictionary):
-        word = Word.objects.create(
-            dictionary=dictionary,
-            word="New Word",
-            definition="A new word",
-        )
-        assert word.slug == "new-word"
-
-    def test_manual_slug(self, dictionary):
-        word = Word.objects.create(
-            dictionary=dictionary,
-            word="Test Word",
-            slug="custom-word-slug",
-            definition="A test word",
-        )
-        assert word.slug == "custom-word-slug"
-
     def test_ordering(self, dictionary):
         Word.objects.create(dictionary=dictionary, word="Zebra", definition="Z")
         Word.objects.create(dictionary=dictionary, word="Apple", definition="A")
@@ -140,40 +123,36 @@ class TestWord:
         words = list(dictionary.words.values_list("word", flat=True))
         assert words == ["Apple", "Mango", "Zebra"]
 
-    def test_unique_together_slug_dictionary(self, dictionary):
+    def test_unique_together_word_dictionary(self, dictionary):
         Word.objects.create(
             dictionary=dictionary,
             word="Test",
-            slug="test-slug",
             definition="First",
         )
 
         with pytest.raises(IntegrityError):
             Word.objects.create(
                 dictionary=dictionary,
-                word="Test 2",
-                slug="test-slug",  # Same slug in same dictionary
+                word="Test",  # Same word in same dictionary
                 definition="Second",
             )
 
-    def test_same_slug_different_dictionaries(self, db):
+    def test_same_word_different_dictionaries(self, db):
         dict1 = Dictionary.objects.create(name="Dictionary 1", prompt="test")
         dict2 = Dictionary.objects.create(name="Dictionary 2", prompt="test")
 
-        # Same slug in different dictionaries should work
+        # Same word in different dictionaries should work
         Word.objects.create(
             dictionary=dict1,
             word="Test",
-            slug="test",
             definition="First",
         )
         word2 = Word.objects.create(
             dictionary=dict2,
             word="Test",
-            slug="test",
             definition="Second",
         )
-        assert word2.slug == "test"
+        assert word2.word == "Test"
 
     def test_optional_fields(self, dictionary):
         word = Word.objects.create(

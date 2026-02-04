@@ -56,7 +56,6 @@ class Word(Timestamped):
         Dictionary, on_delete=models.CASCADE, related_name="words"
     )
     word = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, blank=True)
     definition = models.TextField()
     example_sentence = models.TextField(blank=True)
     pronunciation = models.CharField(max_length=255, blank=True)
@@ -64,12 +63,7 @@ class Word(Timestamped):
 
     class Meta(Timestamped.Meta):
         ordering = ["word"]
-        unique_together = ["dictionary", "slug"]
+        unique_together = ["dictionary", "word"]
 
     def __str__(self) -> str:
         return f"{self.word} ({self.dictionary.name})"
-
-    def save(self, *args, **kwargs) -> None:
-        if not self.slug:
-            self.slug = slugify(self.word)
-        super().save(*args, **kwargs)

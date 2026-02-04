@@ -191,8 +191,6 @@ CACHES = {
 
 # OpenRouter API configuration
 OPENROUTER_API_KEY = env.str("OPENROUTER_API_KEY", default="")
-OPENROUTER_TEXT_MODEL = env.str(
-    "OPENROUTER_TEXT_MODEL", default="openai/gpt-oss-20b:free"
-)
+OPENROUTER_TEXT_MODEL = env.str("OPENROUTER_TEXT_MODEL", default="openrouter/free")
 
 env.seal()

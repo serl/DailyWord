@@ -80,7 +80,7 @@ class OpenRouterService:
         prompt = f"""Generate {count} {prompt}.
 
 For each word, provide:
-- word: the vocabulary word
+- word: the vocabulary word (lowercase if not a proper noun)
 - definition: a clear, concise definition
 - example_sentence: a sentence using the word naturally
 - pronunciation: phonetic pronunciation
