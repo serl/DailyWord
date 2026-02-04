@@ -49,31 +49,26 @@ Admin interface: `http://127.0.0.1:8000/admin/`
 
 ```bash
 uv run django-admin create_dictionary "English Vocabulary" \
-  --slug=english-vocabulary \
-  --description="Common English words for learners"
+  --prompt="Generate intermediate English vocabulary words about cooking and food" \
+  --slug=english-vocabulary
 ```
 
 Options:
 
+- `--prompt`: Prompt used for AI word generation (required)
 - `--slug`: Custom URL-friendly slug (auto-generated if not provided)
-- `--description`: Description of the dictionary
 
 ### Generate Words with AI
 
 Generate vocabulary words for a dictionary using AI:
 
 ```bash
-uv run django-admin generate_words english-vocabulary \
-  --theme="cooking and food" \
-  --count=20 \
-  --difficulty=intermediate
+uv run django-admin generate_words english-vocabulary --count=20
 ```
 
 Options:
 
-- `--theme`: Theme or topic for the words (required)
 - `--count`: Number of words to generate (default: 10)
-- `--difficulty`: beginner, intermediate, or advanced (default: intermediate)
 - `--dry-run`: Preview words without saving
 
 ## Running Tests
