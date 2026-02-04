@@ -4,10 +4,14 @@ version = "0.1.0"
 description = "A Django project for daily word tracking"
 requires-python = "==3.14.*"
 dependencies = [
+  "cairosvg==2.7.1",
   "django==6.0.2",
+  "django-typer[rich]==3.5.1",
   "environs[django]==14.5.0",
   "gunicorn==23.0.0",
+  "pillow==12.1.0",
   "psycopg[binary]==3.3.2",
+  "requests==2.32.5",
   "whitenoise[brotli]==6.11.0",
 ]
 
@@ -41,6 +45,9 @@ DEP002 = [
   "whitenoise",
   "gunicorn",
 ]
+DEP003 = [
+  "typer",  # indirect import via django-typer
+]
 
 [tool.pytest]
 DJANGO_SETTINGS_MODULE = "config.settings"
@@ -48,6 +55,7 @@ FAIL_INVALID_TEMPLATE_VARS = true
 filterwarnings = [
   "error",  # fail on warnings
   "ignore::pytest.PytestUnraisableExceptionWarning",
+  "ignore:In Typer, only the parameter 'autocompletion' is supported:DeprecationWarning",  # https://github.com/django-commons/django-typer/issues/123
 ]
 
 [tool.ruff]

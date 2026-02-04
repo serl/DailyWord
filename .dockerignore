@@ -1,6 +1,7 @@
 .git/
 **/.gitignore
 .envrc
+.env
 
 # .gitignore contents
 **/*.egg-info/
