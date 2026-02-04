@@ -20,7 +20,9 @@ class Dictionary(Timestamped):
 
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
-    description = models.TextField(blank=True)
+    prompt = models.TextField(
+        help_text="Prompt used for AI word generation, for example: 'vocabulary words related to cooking at beginner level'",
+    )
 
     class Meta(Timestamped.Meta):
         verbose_name_plural = "dictionaries"

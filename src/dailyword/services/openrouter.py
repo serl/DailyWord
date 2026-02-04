@@ -60,9 +60,8 @@ class OpenRouterService:
 
     def generate_word_list(
         self,
-        theme: str,
+        prompt: str,
         count: int = 10,
-        difficulty: str = "intermediate",
     ) -> list[WordDefinition]:
         """
         Generate a list of words with definitions for a given theme.
@@ -78,7 +77,7 @@ class OpenRouterService:
         """
         model = settings.OPENROUTER_TEXT_MODEL
 
-        prompt = f"""Generate {count} vocabulary words related to the theme "{theme}" at {difficulty} level.
+        prompt = f"""Generate {count} {prompt}.
 
 For each word, provide:
 - word: the vocabulary word

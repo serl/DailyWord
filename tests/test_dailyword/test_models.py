@@ -11,7 +11,7 @@ def dictionary(db):
     """Create a test dictionary."""
     return Dictionary.objects.create(
         name="Test Dictionary",
-        description="A test dictionary",
+        prompt="vocabulary words for testing",
     )
 
 
@@ -33,20 +33,24 @@ class TestDictionary:
         assert str(dictionary) == "Test Dictionary"
 
     def test_auto_slug_generation(self, db):
-        dictionary = Dictionary.objects.create(name="My Test Dictionary")
+        dictionary = Dictionary.objects.create(
+            name="My Test Dictionary",
+            prompt="test prompt",
+        )
         assert dictionary.slug == "my-test-dictionary"
 
     def test_manual_slug(self, db):
         dictionary = Dictionary.objects.create(
             name="Test Dictionary",
             slug="custom-slug",
+            prompt="test prompt",
         )
         assert dictionary.slug == "custom-slug"
 
     def test_ordering(self, db):
-        Dictionary.objects.create(name="Zebra")
-        Dictionary.objects.create(name="Apple")
-        Dictionary.objects.create(name="Mango")
+        Dictionary.objects.create(name="Zebra", prompt="test")
+        Dictionary.objects.create(name="Apple", prompt="test")
+        Dictionary.objects.create(name="Mango", prompt="test")
 
         names = list(Dictionary.objects.values_list("name", flat=True))
         assert names == ["Apple", "Mango", "Zebra"]
@@ -81,8 +85,8 @@ class TestDictionary:
         assert result3 == result4
 
     def test_get_word_for_date_different_dictionaries(self, db):
-        dict1 = Dictionary.objects.create(name="Dictionary 1")
-        dict2 = Dictionary.objects.create(name="Dictionary 2")
+        dict1 = Dictionary.objects.create(name="Dictionary 1", prompt="test")
+        dict2 = Dictionary.objects.create(name="Dictionary 2", prompt="test")
 
         # Same words in both
         for i in range(5):
@@ -153,8 +157,8 @@ class TestWord:
             )
 
     def test_same_slug_different_dictionaries(self, db):
-        dict1 = Dictionary.objects.create(name="Dictionary 1")
-        dict2 = Dictionary.objects.create(name="Dictionary 2")
+        dict1 = Dictionary.objects.create(name="Dictionary 1", prompt="test")
+        dict2 = Dictionary.objects.create(name="Dictionary 2", prompt="test")
 
         # Same slug in different dictionaries should work
         Word.objects.create(
