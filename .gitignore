@@ -3,3 +3,4 @@
 /staticfiles/
 /db.sqlite3*
 /.coverage
+/.env
