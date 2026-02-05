@@ -11,6 +11,15 @@ from PIL import Image
 from .models import Dictionary, Word
 
 
+class PngResponse(HttpResponse):
+    """HttpResponse subclass for PNG images that automatically sets Content-Length."""
+
+    def __init__(self, content: bytes, **kwargs) -> None:
+        kwargs["content_type"] = "image/png"
+        super().__init__(content, **kwargs)
+        self["Content-Length"] = len(content)
+
+
 def _wrap_text_for_svg(
     text: str, chars_per_line: int, start_y: int, line_height: int
 ) -> list[dict]:
@@ -145,7 +154,7 @@ class DailyWordImageView(View):
             dictionary = Dictionary.objects.get(slug=dictionary_slug)
         except Dictionary.DoesNotExist:
             image_data = generate_error_image("Dictionary not found", width, height)
-            return HttpResponse(image_data, content_type="image/png")
+            return PngResponse(image_data)
 
         today = date.today()
         word = dictionary.get_word_for_date(today)
@@ -154,8 +163,8 @@ class DailyWordImageView(View):
             image_data = generate_error_image(
                 "No words in this dictionary", width, height
             )
-            return HttpResponse(image_data, content_type="image/png")
+            return PngResponse(image_data)
 
         image_data = generate_word_image(word, width, height)
 
-        return HttpResponse(image_data, content_type="image/png")
+        return PngResponse(image_data)
