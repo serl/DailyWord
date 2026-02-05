@@ -145,7 +145,7 @@ class DailyWordImageView(View):
             dictionary = Dictionary.objects.get(slug=dictionary_slug)
         except Dictionary.DoesNotExist:
             image_data = generate_error_image("Dictionary not found", width, height)
-            return HttpResponse(image_data, content_type="image/png", status=404)
+            return HttpResponse(image_data, content_type="image/png")
 
         today = date.today()
         word = dictionary.get_word_for_date(today)
@@ -154,7 +154,7 @@ class DailyWordImageView(View):
             image_data = generate_error_image(
                 "No words in this dictionary", width, height
             )
-            return HttpResponse(image_data, content_type="image/png", status=404)
+            return HttpResponse(image_data, content_type="image/png")
 
         image_data = generate_word_image(word, width, height)
 
