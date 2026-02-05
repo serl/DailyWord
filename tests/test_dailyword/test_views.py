@@ -7,7 +7,7 @@ from django.test import Client
 from PIL import Image
 
 from dailyword.models import Dictionary, Word
-from dailyword.views import generate_error_image, generate_word_image
+from dailyword.views import PngResponse, generate_error_image, generate_word_image
 
 
 @pytest.fixture
@@ -47,6 +47,17 @@ def word_minimal(dictionary):
     )
 
 
+class TestPngResponse:
+    def test_sets_content_type(self):
+        response = PngResponse(b"test content")
+        assert response["Content-Type"] == "image/png"
+
+    def test_content_length_matches_actual_content(self):
+        content = b"x" * 1000
+        response = PngResponse(content)
+        assert response["Content-Length"] == "1000"
+
+
 class TestGenerateWordImage:
     def test_generates_image(self, word):
         image_data = generate_word_image(word, 800, 600)
@@ -83,6 +94,8 @@ class TestDailyWordImageView:
 
         assert response.status_code == 200
         assert response["Content-Type"] == "image/png"
+        assert "Content-Length" in response
+        assert int(response["Content-Length"]) == len(response.content)
 
         # Verify response is valid PNG
         img = Image.open(io.BytesIO(response.content))
@@ -125,6 +138,8 @@ class TestDailyWordImageView:
 
         assert response.status_code == 200
         assert response["Content-Type"] == "image/png"
+        assert "Content-Length" in response
+        assert int(response["Content-Length"]) == len(response.content)
 
         img = Image.open(io.BytesIO(response.content))
         assert img.format == "PNG"
@@ -135,6 +150,8 @@ class TestDailyWordImageView:
 
         assert response.status_code == 200
         assert response["Content-Type"] == "image/png"
+        assert "Content-Length" in response
+        assert int(response["Content-Length"]) == len(response.content)
 
         img = Image.open(io.BytesIO(response.content))
         assert img.format == "PNG"
