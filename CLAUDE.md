@@ -37,10 +37,6 @@ uv run pytest tests/test_dailyword/test_models.py::test_function_name -v
 
 # Code quality (runs all pre-commit hooks)
 prek run -a
-
-# Linting only
-uv run ruff check --force-exclude
-uv run ruff format --force-exclude
 ```
 
 ## Project Structure
@@ -83,3 +79,8 @@ uv run django-admin generate_words <slug> --count=10 --dry-run
 Required for production: `SECRET_KEY`, `BASE_URL`, `DATABASE_URL`, `OPENROUTER_API_KEY`
 
 See `.env.example` for all options.
+
+## Development policies
+
+We try to have 100% test coverage when that makes sense.
+When working on new features, start by writing tests that define the expected behavior, then implement the code to make those tests pass.
