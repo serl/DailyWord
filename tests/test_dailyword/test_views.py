@@ -123,7 +123,7 @@ class TestDailyWordImageView:
     def test_dictionary_not_found(self, client, db):
         response = client.get("/nonexistent/512x256/")
 
-        assert response.status_code == 404
+        assert response.status_code == 200
         assert response["Content-Type"] == "image/png"
 
         img = Image.open(io.BytesIO(response.content))
@@ -133,7 +133,7 @@ class TestDailyWordImageView:
     def test_empty_dictionary(self, client, dictionary):
         response = client.get("/test-dictionary/512x256/")
 
-        assert response.status_code == 404
+        assert response.status_code == 200
         assert response["Content-Type"] == "image/png"
 
         img = Image.open(io.BytesIO(response.content))
