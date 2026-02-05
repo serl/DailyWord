@@ -110,6 +110,10 @@ class TestDictionary:
         assert result1 is not None
         assert result2 is not None
 
+    def test_get_absolute_url(self, dictionary):
+        url = dictionary.get_absolute_url()
+        assert url == "/test-dictionary/512x256/"
+
 
 class TestWord:
     def test_str(self, word):
