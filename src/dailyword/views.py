@@ -3,8 +3,7 @@ import textwrap
 from datetime import date
 
 import cairosvg
-from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404
+from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
 from django.views import View
 from PIL import Image
@@ -94,6 +93,33 @@ def generate_word_image(word: Word, width: int, height: int) -> bytes:
     return buffer.getvalue()
 
 
+def generate_error_image(message: str, width: int, height: int) -> bytes:
+    """Generate a grayscale PNG error image with a 404 message."""
+    title_size = max(24, width // 10)
+    body_size = max(14, width // 25)
+
+    svg_content = render_to_string(
+        "dailyword/error_image.svg",
+        {
+            "width": width,
+            "height": height,
+            "title_size": title_size,
+            "body_size": body_size,
+            "message": message,
+        },
+    )
+
+    png_data = cairosvg.svg2png(bytestring=svg_content.encode("utf-8"))
+
+    img = Image.open(io.BytesIO(png_data))
+    grayscale_img = img.convert("L")
+
+    buffer = io.BytesIO()
+    grayscale_img.save(buffer, format="PNG")
+    buffer.seek(0)
+    return buffer.getvalue()
+
+
 class DailyWordImageView(View):
     """
     API endpoint to get the daily word image for a dictionary.
@@ -111,20 +137,24 @@ class DailyWordImageView(View):
         width: int,
         height: int,
     ) -> HttpResponse:
-        dictionary = get_object_or_404(Dictionary, slug=dictionary_slug)
+        # Clamp dimensions to reasonable values
+        width = max(100, min(width, 4096))
+        height = max(100, min(height, 4096))
+
+        try:
+            dictionary = Dictionary.objects.get(slug=dictionary_slug)
+        except Dictionary.DoesNotExist:
+            image_data = generate_error_image("Dictionary not found", width, height)
+            return HttpResponse(image_data, content_type="image/png", status=404)
 
         today = date.today()
         word = dictionary.get_word_for_date(today)
 
         if word is None:
-            return JsonResponse(
-                {"error": "No words in this dictionary"},
-                status=404,
+            image_data = generate_error_image(
+                "No words in this dictionary", width, height
             )
-
-        # Clamp dimensions to reasonable values
-        width = max(100, min(width, 4096))
-        height = max(100, min(height, 4096))
+            return HttpResponse(image_data, content_type="image/png", status=404)
 
         image_data = generate_word_image(word, width, height)
 
