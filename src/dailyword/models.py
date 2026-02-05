@@ -50,7 +50,7 @@ class Dictionary(Timestamped):
 
 
 class Word(Timestamped):
-    """A word with its definition and optional image."""
+    """A word with its definition."""
 
     dictionary = models.ForeignKey(
         Dictionary, on_delete=models.CASCADE, related_name="words"
