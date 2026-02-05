@@ -8,6 +8,6 @@ urlpatterns = [
     path(
         "<str:dictionary_slug>/<int:width>x<int:height>/",
         DailyWordImageView.as_view(),
-        name="daily-word-image",
+        name="day-image",
     ),
 ]

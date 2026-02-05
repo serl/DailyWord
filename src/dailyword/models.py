@@ -2,6 +2,7 @@ import hashlib
 from datetime import date
 
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 
 
@@ -36,6 +37,17 @@ class Dictionary(Timestamped):
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self) -> str:
+        """Return the URL for this dictionary's detail view."""
+        return reverse(
+            "dailyword:day-image",
+            kwargs={
+                "dictionary_slug": self.slug,
+                "width": 512,
+                "height": 256,
+            },
+        )
+
     def get_word_for_date(self, target_date: date) -> Word | None:
         """Get the word assigned to a specific date for this dictionary."""
         words = list(self.words.all().order_by("id"))
@@ -50,7 +62,7 @@ class Dictionary(Timestamped):
 
 
 class Word(Timestamped):
-    """A word with its definition and optional image."""
+    """A word with its definition."""
 
     dictionary = models.ForeignKey(
         Dictionary, on_delete=models.CASCADE, related_name="words"

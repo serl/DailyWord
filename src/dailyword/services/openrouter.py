@@ -64,18 +64,11 @@ class OpenRouterService:
         count: int = 10,
     ) -> list[WordDefinition]:
         """
-        Generate a list of words with definitions for a given theme.
-
-        Args:
-            theme: The theme or topic for the words
-            count: Number of words to generate
-            difficulty: beginner, intermediate, or advanced
-            model: Optional model override
+        Generate a list of words with definitions for a given prompt.
 
         Returns:
             List of WordDefinition objects
         """
-        model = settings.OPENROUTER_TEXT_MODEL
 
         prompt = f"""Generate {count} {prompt}.
 
@@ -90,7 +83,7 @@ Return a JSON object with a "words" array containing these objects.
 Return ONLY the JSON object, no markdown or other formatting."""
 
         payload = {
-            "model": model,
+            "model": settings.OPENROUTER_TEXT_MODEL,
             "messages": [
                 {
                     "role": "user",
