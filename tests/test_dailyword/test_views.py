@@ -7,7 +7,7 @@ from django.test import Client
 from PIL import Image
 
 from dailyword.models import Dictionary, Word
-from dailyword.views import generate_word_image
+from dailyword.views import generate_error_image, generate_word_image
 
 
 @pytest.fixture
@@ -48,23 +48,12 @@ def word_minimal(dictionary):
 
 
 class TestGenerateWordImage:
-    def test_generates_png_image(self, word):
-        image_data = generate_word_image(word, 512, 256)
-
-        # Verify it's valid PNG data
-        img = Image.open(io.BytesIO(image_data))
-        assert img.format == "PNG"
-
-    def test_generates_grayscale_image(self, word):
-        image_data = generate_word_image(word, 512, 256)
-
-        img = Image.open(io.BytesIO(image_data))
-        assert img.mode == "L"  # Grayscale
-
-    def test_respects_dimensions(self, word):
+    def test_generates_image(self, word):
         image_data = generate_word_image(word, 800, 600)
 
         img = Image.open(io.BytesIO(image_data))
+        assert img.format == "PNG"
+        assert img.mode == "L"  # Grayscale
         assert img.size == (800, 600)
 
     def test_works_with_minimal_word(self, word_minimal):
@@ -72,7 +61,18 @@ class TestGenerateWordImage:
 
         img = Image.open(io.BytesIO(image_data))
         assert img.format == "PNG"
+        assert img.mode == "L"  # Grayscale
         assert img.size == (512, 256)
+
+
+class TestGenerateErrorImage:
+    def test_generates_png_image(self):
+        image_data = generate_error_image("Test error", 800, 600)
+
+        img = Image.open(io.BytesIO(image_data))
+        assert img.format == "PNG"
+        assert img.mode == "L"
+        assert img.size == (800, 600)
 
 
 class TestDailyWordImageView:
@@ -122,9 +122,20 @@ class TestDailyWordImageView:
 
     def test_dictionary_not_found(self, client, db):
         response = client.get("/nonexistent/512x256/")
+
         assert response.status_code == 404
+        assert response["Content-Type"] == "image/png"
+
+        img = Image.open(io.BytesIO(response.content))
+        assert img.format == "PNG"
+        assert img.mode == "L"
 
     def test_empty_dictionary(self, client, dictionary):
         response = client.get("/test-dictionary/512x256/")
+
         assert response.status_code == 404
-        assert response.json()["error"] == "No words in this dictionary"
+        assert response["Content-Type"] == "image/png"
+
+        img = Image.open(io.BytesIO(response.content))
+        assert img.format == "PNG"
+        assert img.mode == "L"
