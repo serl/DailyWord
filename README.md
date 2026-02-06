@@ -65,7 +65,7 @@ Admin interface: `http://127.0.0.1:8000/admin/`
 
 ```bash
 uv run django-admin create_dictionary "English Vocabulary" \
-  --prompt="Generate intermediate English vocabulary words about cooking and food" \
+  --prompt="intermediate English vocabulary words about cooking and food" \
   --slug=english-vocabulary
 ```
 
