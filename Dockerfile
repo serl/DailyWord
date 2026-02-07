@@ -22,6 +22,8 @@ FROM base AS final
 ARG BUILD_VERSION
 ARG BUILD_ARCH
 
+ENV HOME_ASSISTANT_BUILD="${BUILD_ARCH}${BUILD_VERSION}"
+
 LABEL \
     io.hass.version="$BUILD_VERSION" \
     io.hass.type="addon" \
