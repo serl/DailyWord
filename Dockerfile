@@ -19,6 +19,14 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 FROM base AS final
 
+ARG BUILD_VERSION
+ARG BUILD_ARCH
+
+LABEL \
+    io.hass.version="$BUILD_VERSION" \
+    io.hass.type="addon" \
+    io.hass.arch="$BUILD_ARCH"
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     gettext \
