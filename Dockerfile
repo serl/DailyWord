@@ -49,7 +49,7 @@ USER app
 
 EXPOSE 8000
 
-HEALTHCHECK --interval=5s --timeout=5s --start-period=5s --retries=30 \
+HEALTHCHECK --interval=10s --timeout=5s --start-period=10s --retries=10 \
     CMD curl --fail http://localhost:8000/ || exit 1
 
 ENTRYPOINT ["./entrypoint.sh"]
