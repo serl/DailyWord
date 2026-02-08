@@ -126,5 +126,4 @@ jobs:
             --test \
             --amd64 \
             --aarch64 \
-            --target . \
-            --docker-hub _
+            --target .
