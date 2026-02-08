@@ -19,15 +19,22 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 FROM base AS final
 
+
+# Home Assistant app specific part. We need specific labels, AND to run as root to be able to write to /data for the database and static files.
+# While at it, we also add an env variable to be able to detect we're running in Home Assistant and read the configuration file accordingly.
 ARG BUILD_VERSION
 ARG BUILD_ARCH
+ARG HOME_ASSISTANT_BUILD="${BUILD_ARCH}${BUILD_VERSION}"
+ARG RUN_AS="${HOME_ASSISTANT_BUILD:+root}"
 
-ENV HOME_ASSISTANT_BUILD="${BUILD_ARCH}${BUILD_VERSION}"
+ENV HOME_ASSISTANT_BUILD="${HOME_ASSISTANT_BUILD:+1}"
 
 LABEL \
     io.hass.version="$BUILD_VERSION" \
     io.hass.type="addon" \
     io.hass.arch="$BUILD_ARCH"
+
+## End home assistant shenanigans
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
@@ -47,7 +54,7 @@ RUN django-admin collectstatic --noinput
 RUN django-admin compilemessages
 RUN django-admin check
 
-USER app
+USER ${RUN_AS:-app}
 
 EXPOSE 8000
 
