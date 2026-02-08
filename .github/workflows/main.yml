@@ -127,4 +127,4 @@ jobs:
             --amd64 \
             --aarch64 \
             --target addon \
-            --docker-hub serl/dailyword
+            --image serl/{arch}-dailyword
