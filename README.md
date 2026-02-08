@@ -108,3 +108,18 @@ Use the provided `Dockerfile` to build and deploy the application.
 Set the environment variables as in `.env.example`.
 
 Exposed port: `8000`.
+
+### Home Assistant app
+
+You can deploy this as Home Assistant app as well. It's very much a work-in-progress as everything else.
+To do so, clone this repository in your local `/addons` directory, then go to the app store, refresh the repository and you should see "Daily Word" as a local app.
+
+Currently, it'll just run the Django server on your Home Assistant device, on port 32459.
+
+Since I don't understand yet if/how to run commands on the container deployed with this strategy, in order to fill users/dictionaries/words, you can run the app locally, then export the data using this command:
+
+```bash
+uv run django-admin dumpdata --indent 2 --exclude auth.permission --exclude contenttypes --exclude sessions --output dailyword.json
+```
+
+Then, upload this file to your Home Assistant device in `/share`. The container will pick it up and load the data at startup. **Delete the file** after that to avoid loading it again on next startups.

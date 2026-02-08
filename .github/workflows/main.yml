@@ -110,3 +110,22 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t dailyword:test .
+
+  home-assistant-build:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          persist-credentials: false
+
+      - name: Test build
+        uses: home-assistant/builder@2025.11.0 # zizmor: ignore[unpinned-uses] this needs to be pinned to a version, since it's used both for the action and the underlying Docker image
+        with:
+          args: |
+            --test \
+            --amd64 \
+            --aarch64 \
+            --target . \
+            --image dailyword \
+            --docker-hub serl
