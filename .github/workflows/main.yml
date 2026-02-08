@@ -120,7 +120,7 @@ jobs:
           persist-credentials: false
 
       - name: Test build
-        uses: home-assistant/builder@21bc64d76dad7a5184c67826aab41c6b6f89023a # 2025.11.0
+        uses: home-assistant/builder@2025.11.0 # zizmor: ignore[unpinned-uses] this needs to be pinned to a version, since it's used both for the action and the underlying Docker image
         with:
           args: |
             --test \
