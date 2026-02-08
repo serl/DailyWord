@@ -108,3 +108,10 @@ Use the provided `Dockerfile` to build and deploy the application.
 Set the environment variables as in `.env.example`.
 
 Exposed port: `8000`.
+
+### Home Assistant app
+
+You can deploy this as Home Assistant app as well. It's very much a work-in-progress as everything else.
+To do so, clone this repository in your local `/addons` directory, then go to the app store, refresh the repository and you should see "Daily Word" as a local app.
+
+Currently, it'll just run the Django server on your Home Assistant device, on port 32459.

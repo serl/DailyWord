@@ -1,0 +1,19 @@
+---
+# Home Assistant app configuration
+name: Daily Word
+description: Learn every day a new word
+url: https://github.com/serl/DailyWord/
+version: 0.0.1
+slug: dailyword
+arch:
+  - aarch64
+  - amd64
+init: false
+startup: application
+ports:
+  8000/tcp: 32459
+option:
+  openrouter_api_key:
+schema:
+  openrouter_api_key: str
+  openrouter_text_model: str?
