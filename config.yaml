@@ -12,6 +12,8 @@ init: false
 startup: application
 ports:
   8000/tcp: 32459
+map:
+  - share
 option:
   openrouter_api_key:
 schema:

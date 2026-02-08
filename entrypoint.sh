@@ -16,4 +16,12 @@ fi
 
 django-admin migrate --noinput
 
+if [[ $HOME_ASSISTANT_BUILD ]]; then
+    fixture_file=/share/dailyword.json
+    if [[ -r $fixture_file ]]; then
+        echo "Loading data from $fixture_file"
+        django-admin loaddata --format=json - <"$fixture_file"
+    fi
+fi
+
 exec "$@"
