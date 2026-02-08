@@ -6,7 +6,12 @@ if [[ $HOME_ASSISTANT_BUILD ]]; then
     export DATABASE_URL=sqlite:////data/db.sqlite3
     export ALLOWED_HOSTS='*'
 
-    eval python -c "import json; options = json.loads(open('/data/options.json').read()); print('\n'.join(f'export {key.upper()}={value}' for key, value in options.items()))"
+    get_option() {
+        python -c "import json; options = json.loads(open('/data/options.json').read()); print(options.get('$1', ''))"
+    }
+
+    export OPENROUTER_API_KEY="$(get_option "openrouter_api_key")"
+    export OPENROUTER_TEXT_MODEL="$(get_option "openrouter_text_model")"
 fi
 
 django-admin migrate --noinput
