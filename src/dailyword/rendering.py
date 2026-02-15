@@ -11,9 +11,7 @@ FONTS_DIR = Path(__file__).parent / "fonts"
 # Colors for grayscale mode "L"
 WHITE = 255
 BLACK = 0
-DARK_GRAY = 40
-MEDIUM_GRAY = 80
-LIGHT_GRAY = 120
+GRAY = 120
 DIVIDER_GRAY = 180
 
 
@@ -92,7 +90,7 @@ def generate_word_image(
         meta_text = "  ".join(meta_parts)
         # Vertically align metadata with title baseline
         meta_y = y + (title_bbox[3] - small_font.getbbox(meta_text)[3])
-        draw.text((meta_x, meta_y), meta_text, font=small_font, fill=MEDIUM_GRAY)
+        draw.text((meta_x, meta_y), meta_text, font=small_font, fill=GRAY)
 
     y += title_bbox[3] + body_size
 
@@ -126,11 +124,11 @@ def generate_word_image(
         yesterday_title = f"Yesterday: {yesterday_word.word}"
         if yesterday_word.pronunciation:
             yesterday_title += f"  /{yesterday_word.pronunciation}/"
-        draw.text((padding, y), yesterday_title, font=small_bold_font, fill=MEDIUM_GRAY)
+        draw.text((padding, y), yesterday_title, font=small_bold_font, fill=GRAY)
         y += int(small_size * 1.4)
 
         for line in _wrap_text(yesterday_word.definition, small_font, max_text_width):
-            draw.text((padding, y), line, font=small_font, fill=LIGHT_GRAY)
+            draw.text((padding, y), line, font=small_font, fill=GRAY)
             y += int(small_size * 1.4)
 
     buffer = io.BytesIO()
@@ -162,7 +160,7 @@ def generate_error_image(message: str, width: int, height: int) -> bytes:
     msg_x = (width - msg_bbox[2]) // 2
     msg_y = title_y + title_bbox[3] + body_size
 
-    draw.text((msg_x, msg_y), message, font=message_font, fill=MEDIUM_GRAY)
+    draw.text((msg_x, msg_y), message, font=message_font, fill=GRAY)
 
     buffer = io.BytesIO()
     img.save(buffer, format="PNG")
