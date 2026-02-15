@@ -1,3 +1,7 @@
+import os
+
+os.environ["DJANGO_DEBUG"] = "False"
+
 import pytest
 from django.conf import settings
 from django.utils import translation
