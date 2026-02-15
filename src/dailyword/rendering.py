@@ -139,8 +139,7 @@ def generate_error_image(message: str, width: int, height: int) -> bytes:
     title_font = _load_font(bold=True, size=title_size)
     message_font = _load_font(bold=False, size=body_size)
 
-    # Center "404" vertically
-    title_text = "404"
+    title_text = "??"
     title_bbox = title_font.getbbox(title_text)
     title_x = (width - title_bbox[2]) // 2
     title_y = height // 3

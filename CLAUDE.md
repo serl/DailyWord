@@ -93,6 +93,14 @@ See `.env.example` for all options.
 We try to have 100% test coverage when that makes sense.
 When working on new features, start by writing tests that define the expected behavior, then implement the code to make those tests pass.
 
+## Commit messages
+
+Use [Conventional Commits](https://www.conventionalcommits.org/): `<type>: <description>`
+
+Common types: `feat`, `fix`, `refactor`, `test`, `docs`, `chore`, `ci`, `style`, `perf`
+
+Keep the subject line short (≤72 chars). Use the body for additional context when needed.
+
 ## CLAUDE.md maintenance
 
 This file should be kept up to date automatically. When working on the project, update CLAUDE.md with any new discoveries: architecture patterns, conventions, commands, gotchas, or other useful context.

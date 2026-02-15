@@ -2,9 +2,15 @@ import io
 
 import pytest
 from PIL import Image
+from syrupy.extensions.image import PNGImageSnapshotExtension
 
 from dailyword.models import Dictionary, Word
 from dailyword.rendering import generate_error_image, generate_word_image
+
+
+@pytest.fixture
+def snapshot_png(snapshot):
+    return snapshot.use_extension(PNGImageSnapshotExtension)
 
 
 @pytest.fixture
@@ -83,25 +89,25 @@ class TestGenerateWordImage:
         img = Image.open(io.BytesIO(image_data))
         assert img.size == (100, 100)
 
-    def test_snapshot_full_word(self, word, snapshot):
+    def test_snapshot_full_word(self, word, snapshot_png):
         image_data = generate_word_image(word, 800, 600)
-        assert image_data == snapshot
+        assert image_data == snapshot_png
 
-    def test_snapshot_minimal_word(self, word_minimal, snapshot):
+    def test_snapshot_minimal_word(self, word_minimal, snapshot_png):
         image_data = generate_word_image(word_minimal, 512, 256)
-        assert image_data == snapshot
+        assert image_data == snapshot_png
 
-    def test_snapshot_with_yesterday(self, word, yesterday_word, snapshot):
+    def test_snapshot_with_yesterday(self, word, yesterday_word, snapshot_png):
         image_data = generate_word_image(word, 800, 600, yesterday_word)
-        assert image_data == snapshot
+        assert image_data == snapshot_png
 
-    def test_snapshot_error_image(self, snapshot):
+    def test_snapshot_error_image(self, snapshot_png):
         image_data = generate_error_image("Dictionary not found", 800, 600)
-        assert image_data == snapshot
+        assert image_data == snapshot_png
 
-    def test_snapshot_small_dimensions(self, word, snapshot):
+    def test_snapshot_small_dimensions(self, word, snapshot_png):
         image_data = generate_word_image(word, 100, 100)
-        assert image_data == snapshot
+        assert image_data == snapshot_png
 
 
 class TestGenerateErrorImage:
