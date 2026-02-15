@@ -12,7 +12,8 @@ DailyWord is a Django application for learning new words with AI-generated defin
 - Package manager: uv (exact version pinning)
 - Database: PostgreSQL (production) / SQLite (development)
 - AI integration: OpenRouter API for word generation
-- Image processing: Pillow
+- Image rendering: Pillow (ImageDraw, no system dependencies)
+- Snapshot testing: pytest-image-snapshot (with pixelmatch for fuzzy comparison)
 
 ## Commands
 
@@ -38,6 +39,9 @@ uv run pytest tests/test_dailyword/test_models.py
 # Run single test
 uv run pytest tests/test_dailyword/test_models.py::test_function_name -v
 
+# Update snapshot tests after rendering changes
+uv run pytest --image-snapshot-update
+
 # Code quality (runs all pre-commit hooks)
 prek run -a
 ```
@@ -51,6 +55,8 @@ src/
     ├── models.py     # Dictionary, Word models
     ├── admin.py      # Django admin configuration
     ├── views.py      # API views (DailyWordImageView)
+    ├── rendering.py  # Pillow-based image generation
+    ├── fonts/        # Bundled DejaVu Sans TTF fonts
     ├── management/commands/  # CLI commands
     └── services/openrouter.py  # AI word generation
 tests/                # Mirrors src/ structure
@@ -65,7 +71,9 @@ tests/                # Mirrors src/ structure
 
 **Key pattern:** `Dictionary.get_word_for_date()` uses MD5 hash of dictionary ID + date for deterministic daily word selection.
 
-**API:** `/api/daily-word/<dictionary_slug>/<width>x<height>/` returns a generated image of the daily word.
+**Rendering:** `rendering.py` draws word images directly with Pillow's `ImageDraw` in grayscale mode `"L"`. Bundled DejaVu Sans fonts ensure deterministic rendering across platforms. The image includes today's word and optionally yesterday's word as a reminder section.
+
+**API:** `/api/daily-word/<dictionary_slug>/<width>x<height>/` returns a generated image of the daily word (with yesterday's word shown below a divider).
 
 ## Management Commands
 
@@ -87,3 +95,15 @@ See `.env.example` for all options.
 
 We try to have 100% test coverage when that makes sense.
 When working on new features, start by writing tests that define the expected behavior, then implement the code to make those tests pass.
+
+## Commit messages
+
+Use [Conventional Commits](https://www.conventionalcommits.org/): `<type>: <description>`
+
+Common types: `feat`, `fix`, `refactor`, `test`, `docs`, `chore`, `ci`, `style`, `perf`
+
+Keep the subject line short (≤72 chars). Use the body for additional context when needed.
+
+## CLAUDE.md maintenance
+
+This file should be kept up to date automatically. When working on the project, update CLAUDE.md with any new discoveries: architecture patterns, conventions, commands, gotchas, or other useful context.
