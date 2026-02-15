@@ -26,6 +26,9 @@ uv run django-admin runserver
 # Database migrations
 uv run django-admin migrate
 
+# Collect static files (required before running tests)
+uv run django-admin collectstatic --noinput
+
 # Run tests with coverage
 uv run pytest --cov
 
