@@ -1,4 +1,7 @@
+import os
 from pathlib import Path
+
+os.environ["DJANGO_DEBUG"] = "False"
 
 import pytest
 from django.conf import settings
