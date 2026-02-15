@@ -124,6 +124,8 @@ def generate_word_image(
         y += int(small_size * 0.8)
 
         yesterday_title = f"Yesterday: {yesterday_word.word}"
+        if yesterday_word.pronunciation:
+            yesterday_title += f"  /{yesterday_word.pronunciation}/"
         draw.text((padding, y), yesterday_title, font=small_bold_font, fill=MEDIUM_GRAY)
         y += int(small_size * 1.4)
 
