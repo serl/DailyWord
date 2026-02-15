@@ -76,13 +76,22 @@ class TestGenerateWordImage:
         assert img.size == (512, 256)
         assert image_data == snapshot_png
 
-    def test_with_yesterday_word(self, word, yesterday_word, snapshot_png):
+    def test_with_yesterday_word_800x600(self, word, yesterday_word, snapshot_png):
         image_data = generate_word_image(word, 800, 600, yesterday_word)
 
         img = Image.open(io.BytesIO(image_data))
         assert img.format == "PNG"
         assert img.mode == "L"
         assert img.size == (800, 600)
+        assert image_data == snapshot_png
+
+    def test_with_yesterday_word_960x540(self, word, yesterday_word, snapshot_png):
+        image_data = generate_word_image(word, 960, 540, yesterday_word)
+
+        img = Image.open(io.BytesIO(image_data))
+        assert img.format == "PNG"
+        assert img.mode == "L"
+        assert img.size == (960, 540)
         assert image_data == snapshot_png
 
 
