@@ -1,6 +1,17 @@
+import os
+
+os.environ["DJANGO_DEBUG"] = "False"
+
 import pytest
 from django.conf import settings
 from django.utils import translation
+
+
+def pytest_configure(config):
+    config.addinivalue_line(
+        "filterwarnings",
+        "ignore:No directory at:UserWarning",
+    )
 
 
 @pytest.fixture(autouse=True)
