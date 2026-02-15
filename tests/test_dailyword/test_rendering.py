@@ -67,50 +67,31 @@ class TestGenerateWordImage:
         assert img.mode == "L"
         assert img.size == (800, 600)
 
-    def test_works_with_minimal_word(self, word_minimal):
+    def test_works_with_minimal_word(self, word_minimal, snapshot_png):
         image_data = generate_word_image(word_minimal, 512, 256)
 
         img = Image.open(io.BytesIO(image_data))
         assert img.format == "PNG"
         assert img.mode == "L"
         assert img.size == (512, 256)
+        assert image_data == snapshot_png
 
-    def test_with_yesterday_word(self, word, yesterday_word):
+    def test_with_yesterday_word(self, word, yesterday_word, snapshot_png):
         image_data = generate_word_image(word, 800, 600, yesterday_word)
 
         img = Image.open(io.BytesIO(image_data))
         assert img.format == "PNG"
         assert img.mode == "L"
         assert img.size == (800, 600)
-
-    def test_small_dimensions(self, word):
-        image_data = generate_word_image(word, 100, 100)
-
-        img = Image.open(io.BytesIO(image_data))
-        assert img.size == (100, 100)
-
-    def test_snapshot_full_word(self, word, yesterday_word, snapshot_png):
-        image_data = generate_word_image(word, 800, 600, yesterday_word)
-        assert image_data == snapshot_png
-
-    def test_snapshot_minimal_word(self, word_minimal, snapshot_png):
-        image_data = generate_word_image(word_minimal, 512, 256)
-        assert image_data == snapshot_png
-
-    def test_snapshot_error_image(self, snapshot_png):
-        image_data = generate_error_image("Dictionary not found", 800, 600)
-        assert image_data == snapshot_png
-
-    def test_snapshot_small_dimensions(self, word, snapshot_png):
-        image_data = generate_word_image(word, 100, 100)
         assert image_data == snapshot_png
 
 
 class TestGenerateErrorImage:
-    def test_generates_grayscale_png(self):
+    def test_generates_image(self, snapshot_png):
         image_data = generate_error_image("Test error", 800, 600)
 
         img = Image.open(io.BytesIO(image_data))
         assert img.format == "PNG"
         assert img.mode == "L"
         assert img.size == (800, 600)
+        assert image_data == snapshot_png
