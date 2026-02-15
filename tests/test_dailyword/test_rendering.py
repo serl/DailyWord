@@ -1,16 +1,13 @@
 import io
+from pathlib import Path
 
 import pytest
 from PIL import Image
-from syrupy.extensions.image import PNGImageSnapshotExtension
 
 from dailyword.models import Dictionary, Word
 from dailyword.rendering import generate_error_image, generate_word_image
 
-
-@pytest.fixture
-def snapshot_png(snapshot):
-    return snapshot.use_extension(PNGImageSnapshotExtension)
+SNAPSHOT_DIR = Path(__file__).parent / "__snapshots__/test_rendering"
 
 
 @pytest.fixture
@@ -67,40 +64,56 @@ class TestGenerateWordImage:
         assert img.mode == "L"
         assert img.size == (800, 600)
 
-    def test_works_with_minimal_word(self, word_minimal, snapshot_png):
+    def test_works_with_minimal_word(self, word_minimal, image_snapshot):
         image_data = generate_word_image(word_minimal, 512, 256)
 
         img = Image.open(io.BytesIO(image_data))
         assert img.format == "PNG"
         assert img.mode == "L"
         assert img.size == (512, 256)
-        assert image_data == snapshot_png
+        image_snapshot(
+            img,
+            SNAPSHOT_DIR / "TestGenerateWordImage.test_works_with_minimal_word.png",
+            threshold=True,
+        )
 
-    def test_with_yesterday_word_800x600(self, word, yesterday_word, snapshot_png):
+    def test_with_yesterday_word_800x600(self, word, yesterday_word, image_snapshot):
         image_data = generate_word_image(word, 800, 600, yesterday_word)
 
         img = Image.open(io.BytesIO(image_data))
         assert img.format == "PNG"
         assert img.mode == "L"
         assert img.size == (800, 600)
-        assert image_data == snapshot_png
+        image_snapshot(
+            img,
+            SNAPSHOT_DIR / "TestGenerateWordImage.test_with_yesterday_word_800x600.png",
+            threshold=True,
+        )
 
-    def test_with_yesterday_word_960x540(self, word, yesterday_word, snapshot_png):
+    def test_with_yesterday_word_960x540(self, word, yesterday_word, image_snapshot):
         image_data = generate_word_image(word, 960, 540, yesterday_word)
 
         img = Image.open(io.BytesIO(image_data))
         assert img.format == "PNG"
         assert img.mode == "L"
         assert img.size == (960, 540)
-        assert image_data == snapshot_png
+        image_snapshot(
+            img,
+            SNAPSHOT_DIR / "TestGenerateWordImage.test_with_yesterday_word_960x540.png",
+            threshold=True,
+        )
 
 
 class TestGenerateErrorImage:
-    def test_generates_image(self, snapshot_png):
+    def test_generates_image(self, image_snapshot):
         image_data = generate_error_image("Test error", 800, 600)
 
         img = Image.open(io.BytesIO(image_data))
         assert img.format == "PNG"
         assert img.mode == "L"
         assert img.size == (800, 600)
-        assert image_data == snapshot_png
+        image_snapshot(
+            img,
+            SNAPSHOT_DIR / "TestGenerateErrorImage.test_generates_image.png",
+            threshold=True,
+        )

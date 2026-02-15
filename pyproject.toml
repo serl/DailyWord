@@ -22,8 +22,8 @@ dev = [
   "pytest==9.0.2",
   "pytest-cov==7.0.0",
   "pytest-django==4.11.1",
+  "pytest-image-snapshot[pixelmatch]==0.4.5",
   "ruff==0.14.11",
-  "syrupy==5.1.0",
 ]
 
 [build-system]
