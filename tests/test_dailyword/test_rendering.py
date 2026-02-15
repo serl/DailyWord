@@ -1,0 +1,114 @@
+import io
+
+import pytest
+from PIL import Image
+
+from dailyword.models import Dictionary, Word
+from dailyword.rendering import generate_error_image, generate_word_image
+
+
+@pytest.fixture
+def dictionary(db):
+    return Dictionary.objects.create(
+        name="Test Dictionary",
+        slug="test-dictionary",
+        prompt="test prompt",
+    )
+
+
+@pytest.fixture
+def word(dictionary):
+    """Create a word with all fields populated."""
+    return Word.objects.create(
+        dictionary=dictionary,
+        word="Ephemeral",
+        definition="Lasting for a very short time.",
+        example_sentence="The ephemeral beauty of cherry blossoms reminds us to appreciate the moment.",
+        pronunciation="ih-FEM-er-uhl",
+        part_of_speech="adjective",
+    )
+
+
+@pytest.fixture
+def word_minimal(dictionary):
+    """Create a word with only required fields."""
+    return Word.objects.create(
+        dictionary=dictionary,
+        word="Test",
+        definition="A simple test word.",
+    )
+
+
+@pytest.fixture
+def yesterday_word(dictionary):
+    """Create a second word to use as yesterday's word."""
+    return Word.objects.create(
+        dictionary=dictionary,
+        word="Serendipity",
+        definition="The occurrence of finding pleasant things by chance.",
+        example_sentence="It was pure serendipity that they met at the cafe.",
+        pronunciation="ser-en-DIP-ih-tee",
+        part_of_speech="noun",
+    )
+
+
+class TestGenerateWordImage:
+    def test_generates_grayscale_png(self, word):
+        image_data = generate_word_image(word, 800, 600)
+
+        img = Image.open(io.BytesIO(image_data))
+        assert img.format == "PNG"
+        assert img.mode == "L"
+        assert img.size == (800, 600)
+
+    def test_works_with_minimal_word(self, word_minimal):
+        image_data = generate_word_image(word_minimal, 512, 256)
+
+        img = Image.open(io.BytesIO(image_data))
+        assert img.format == "PNG"
+        assert img.mode == "L"
+        assert img.size == (512, 256)
+
+    def test_with_yesterday_word(self, word, yesterday_word):
+        image_data = generate_word_image(word, 800, 600, yesterday_word)
+
+        img = Image.open(io.BytesIO(image_data))
+        assert img.format == "PNG"
+        assert img.mode == "L"
+        assert img.size == (800, 600)
+
+    def test_small_dimensions(self, word):
+        image_data = generate_word_image(word, 100, 100)
+
+        img = Image.open(io.BytesIO(image_data))
+        assert img.size == (100, 100)
+
+    def test_snapshot_full_word(self, word, snapshot):
+        image_data = generate_word_image(word, 800, 600)
+        assert image_data == snapshot
+
+    def test_snapshot_minimal_word(self, word_minimal, snapshot):
+        image_data = generate_word_image(word_minimal, 512, 256)
+        assert image_data == snapshot
+
+    def test_snapshot_with_yesterday(self, word, yesterday_word, snapshot):
+        image_data = generate_word_image(word, 800, 600, yesterday_word)
+        assert image_data == snapshot
+
+    def test_snapshot_error_image(self, snapshot):
+        image_data = generate_error_image("Dictionary not found", 800, 600)
+        assert image_data == snapshot
+
+    def test_snapshot_small_dimensions(self, word, snapshot):
+        image_data = generate_word_image(word, 100, 100)
+        assert image_data == snapshot
+
+
+class TestGenerateErrorImage:
+    def test_generates_grayscale_png(self):
+        image_data = generate_error_image("Test error", 800, 600)
+
+        img = Image.open(io.BytesIO(image_data))
+        assert img.format == "PNG"
+        assert img.mode == "L"
+        assert img.size == (800, 600)
