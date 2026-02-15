@@ -89,16 +89,12 @@ class TestGenerateWordImage:
         img = Image.open(io.BytesIO(image_data))
         assert img.size == (100, 100)
 
-    def test_snapshot_full_word(self, word, snapshot_png):
-        image_data = generate_word_image(word, 800, 600)
+    def test_snapshot_full_word(self, word, yesterday_word, snapshot_png):
+        image_data = generate_word_image(word, 800, 600, yesterday_word)
         assert image_data == snapshot_png
 
     def test_snapshot_minimal_word(self, word_minimal, snapshot_png):
         image_data = generate_word_image(word_minimal, 512, 256)
-        assert image_data == snapshot_png
-
-    def test_snapshot_with_yesterday(self, word, yesterday_word, snapshot_png):
-        image_data = generate_word_image(word, 800, 600, yesterday_word)
         assert image_data == snapshot_png
 
     def test_snapshot_error_image(self, snapshot_png):

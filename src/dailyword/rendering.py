@@ -18,8 +18,15 @@ DIVIDER_GRAY = 180
 
 
 @lru_cache(maxsize=16)
-def _load_font(bold: bool, size: int) -> ImageFont.FreeTypeFont:
-    filename = "DejaVuSans-Bold.ttf" if bold else "DejaVuSans.ttf"
+def _load_font(
+    bold: bool = False, italic: bool = False, size: int = 16
+) -> ImageFont.FreeTypeFont:
+    if bold:
+        filename = "DejaVuSans-Bold.ttf"
+    elif italic:
+        filename = "DejaVuSans-Oblique.ttf"
+    else:
+        filename = "DejaVuSans.ttf"
     return ImageFont.truetype(str(FONTS_DIR / filename), size)
 
 
@@ -63,7 +70,8 @@ def generate_word_image(
     max_text_width = width - 2 * padding
 
     title_font = _load_font(bold=True, size=title_size)
-    small_font = _load_font(bold=False, size=small_size)
+    small_font = _load_font(size=small_size)
+    small_italic_font = _load_font(italic=True, size=small_size)
     small_bold_font = _load_font(bold=True, size=small_size)
     label_font = _load_font(bold=True, size=body_size)
 
@@ -102,9 +110,10 @@ def generate_word_image(
         draw.text((padding, y), "Example:", font=label_font, fill=BLACK)
         y += int(body_size * 1.5)
 
-        example_text = f'"{word.example_sentence}"'
-        for line in _wrap_text(example_text, small_font, max_text_width):
-            draw.text((padding, y), line, font=small_font, fill=BLACK)
+        for line in _wrap_text(
+            word.example_sentence, small_italic_font, max_text_width
+        ):
+            draw.text((padding, y), line, font=small_italic_font, fill=BLACK)
             y += int(small_size * 1.4)
 
     # Yesterday's word section
