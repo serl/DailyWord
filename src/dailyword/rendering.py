@@ -69,8 +69,8 @@ def generate_word_image(
 
     y = padding
 
-    # Title line: WORD  (part_of_speech)  /pronunciation/
-    title_text = word.word.upper()
+    # Title line: Word  (part_of_speech)  /pronunciation/
+    title_text = word.word
     draw.text((padding, y), title_text, font=title_font, fill=BLACK)
     title_bbox = title_font.getbbox(title_text)
     meta_x = padding + title_bbox[2] + 10
@@ -89,22 +89,22 @@ def generate_word_image(
     y += title_bbox[3] + body_size
 
     # Definition
-    draw.text((padding, y), "Definition:", font=label_font, fill=DARK_GRAY)
+    draw.text((padding, y), "Definition:", font=label_font, fill=BLACK)
     y += int(body_size * 1.5)
 
     for line in _wrap_text(word.definition, small_font, max_text_width):
-        draw.text((padding, y), line, font=small_font, fill=DARK_GRAY)
+        draw.text((padding, y), line, font=small_font, fill=BLACK)
         y += int(small_size * 1.4)
 
     # Example sentence
     if word.example_sentence:
         y += body_size
-        draw.text((padding, y), "Example:", font=label_font, fill=DARK_GRAY)
+        draw.text((padding, y), "Example:", font=label_font, fill=BLACK)
         y += int(body_size * 1.5)
 
         example_text = f'"{word.example_sentence}"'
         for line in _wrap_text(example_text, small_font, max_text_width):
-            draw.text((padding, y), line, font=small_font, fill=LIGHT_GRAY)
+            draw.text((padding, y), line, font=small_font, fill=BLACK)
             y += int(small_size * 1.4)
 
     # Yesterday's word section
@@ -114,7 +114,7 @@ def generate_word_image(
         draw.line([(padding, y), (width - padding, y)], fill=DIVIDER_GRAY, width=1)
         y += int(small_size * 0.8)
 
-        yesterday_title = f"Yesterday: {yesterday_word.word.upper()}"
+        yesterday_title = f"Yesterday: {yesterday_word.word}"
         draw.text((padding, y), yesterday_title, font=small_bold_font, fill=MEDIUM_GRAY)
         y += int(small_size * 1.4)
 
