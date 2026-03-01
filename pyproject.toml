@@ -4,13 +4,13 @@ version = "0.1.0"
 description = "A Django project for daily word tracking"
 requires-python = "==3.14.*"
 dependencies = [
-  "cairosvg==2.7.1",
+  "cairosvg==2.8.2",
   "django==6.0.2",
-  "django-typer[rich]==3.5.1",
-  "environs[django]==14.5.0",
+  "django-typer[rich]==3.6.2",
+  "environs[django]==14.6.0",
   "gunicorn==23.0.0",
   "pillow==12.1.1",
-  "psycopg[binary]==3.3.2",
+  "psycopg[binary]==3.3.3",
   "requests==2.32.5",
   "whitenoise[brotli]==6.11.0",
 ]
