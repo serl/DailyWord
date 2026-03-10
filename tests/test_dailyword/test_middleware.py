@@ -3,12 +3,18 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.test import Client
-from django.urls import path
+from django.urls import path, reverse
 
 from dailyword.middleware import HA_SUPERVISOR_IP
 
+
+def reverse_view(request):
+    return HttpResponse(reverse("home"))
+
+
 urlpatterns = [
     path("", lambda request: HttpResponse(), name="home"),
+    path("reverse/", reverse_view, name="reverse"),
     path("admin/", admin.site.urls),
 ]
 
@@ -48,24 +54,28 @@ class TestIPGating:
 
 
 class TestScriptName:
-    def test_sets_script_name_from_header(self, client, db):
-        response = client.get("/", **INGRESS_HEADERS)
-        assert response.status_code == 200
+    def test_reverse_prefixed_for_ingress(self, client, db):
+        response = client.get("/reverse/", **INGRESS_HEADERS)
+        assert response.content == b"/api/hassio_ingress/abc123/"
+
+    def test_reverse_normal_without_ingress(self, client, db):
+        response = client.get("/reverse/")
+        assert response.content == b"/"
 
     def test_strips_trailing_slash(self, client, db):
         headers = {
             **INGRESS_HEADERS,
             "HTTP_X_INGRESS_PATH": "/api/hassio_ingress/abc123/",
         }
-        response = client.get("/", **headers)
-        assert response.status_code == 200
+        response = client.get("/reverse/", **headers)
+        assert response.content == b"/api/hassio_ingress/abc123/"
 
-    def test_no_script_name_without_ingress_path(self, client, db):
+    def test_no_prefix_without_ingress_path(self, client, db):
         headers = {
             k: v for k, v in INGRESS_HEADERS.items() if k != "HTTP_X_INGRESS_PATH"
         }
-        response = client.get("/", **headers)
-        assert response.status_code == 200
+        response = client.get("/reverse/", **headers)
+        assert response.content == b"/"
 
 
 class TestAutoLogin:

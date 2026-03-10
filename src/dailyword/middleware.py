@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+from django.urls import set_script_prefix
 
 HA_SUPERVISOR_IP = "172.30.32.2"
 
@@ -17,10 +18,8 @@ class IngressMiddleware:
         if not settings.HOME_ASSISTANT_INGRESS_ENABLED or not is_ingress:
             return self.get_response(request)
 
-        # Set SCRIPT_NAME for correct URL generation in admin
-        ingress_path = request.headers.get("x-ingress-path", "")
-        if ingress_path:
-            request.META["SCRIPT_NAME"] = ingress_path.rstrip("/")
+        # Set script prefix for correct URL generation (reverse(), {% url %}, {% static %})
+        set_script_prefix(request.headers.get("x-ingress-path", ""))
 
         # HA already authenticates ingress requests
         request._dont_enforce_csrf_checks = True

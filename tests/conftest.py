@@ -4,6 +4,7 @@ os.environ["DJANGO_DEBUG"] = "False"
 
 import pytest
 from django.conf import settings
+from django.urls import clear_script_prefix
 from django.utils import translation
 
 
@@ -47,3 +48,12 @@ def clear_contenttype_cache():
     from django.contrib.contenttypes.models import ContentType  # noqa: PLC0415
 
     ContentType.objects.clear_cache()
+
+
+@pytest.fixture(autouse=True)
+def clear_url_script_prefix():
+    """
+    Clear the script prefix before each test to avoid interference between tests that set it and those that don't.
+    """
+
+    clear_script_prefix()
