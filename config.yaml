@@ -11,7 +11,7 @@ arch:
 ingress: true
 ingress_port: 8000
 ingress_entry: admin/
-panel_icon: mdi:clipboard-text-multiple-outline
+panel_icon: mdi:clipboard-outline
 panel_admin: false
 init: false
 startup: application
