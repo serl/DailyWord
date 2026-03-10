@@ -31,7 +31,7 @@ class IngressMiddleware:
             request.user.is_authenticated and request.user.username == username
         ):
             display_name = request.headers.get("x-remote-user-display-name", "")
-            user, created = User.objects.get_or_create(
+            user, _ = User.objects.get_or_create(
                 username=username,
                 defaults={
                     "first_name": display_name,
@@ -39,16 +39,7 @@ class IngressMiddleware:
                     "is_superuser": True,
                 },
             )
-            if not created:
-                updates = []
-                if not user.is_staff:
-                    user.is_staff = True
-                    updates.append("is_staff")
-                if not user.is_superuser:
-                    user.is_superuser = True
-                    updates.append("is_superuser")
-                if updates:
-                    user.save(update_fields=updates)
+
             login(request, user, backend="django.contrib.auth.backends.ModelBackend")
 
         response = self.get_response(request)

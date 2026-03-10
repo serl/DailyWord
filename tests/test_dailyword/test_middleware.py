@@ -77,15 +77,6 @@ class TestAutoLogin:
         assert user.is_staff
         assert user.is_superuser
 
-    def test_upgrades_existing_user_to_staff_superuser(self, client, db):
-        User.objects.create_user("hauser", is_staff=False, is_superuser=False)
-
-        client.get("/", **INGRESS_HEADERS)
-
-        user = User.objects.get(username="hauser")
-        assert user.is_staff
-        assert user.is_superuser
-
     def test_skips_login_if_already_logged_in(self, client, db):
         # First request creates and logs in the user
         client.get("/", **INGRESS_HEADERS)
