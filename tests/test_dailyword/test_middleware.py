@@ -7,7 +7,6 @@ from django.urls import path
 
 from dailyword.middleware import HA_SUPERVISOR_IP
 
-# Minimal URL config to avoid importing dailyword.views (cairosvg dependency)
 urlpatterns = [
     path("", lambda request: HttpResponse(), name="home"),
     path("admin/", admin.site.urls),
@@ -24,12 +23,7 @@ INGRESS_HEADERS = {
 @pytest.fixture(autouse=True)
 def _ingress_test_setup(settings):
     settings.ROOT_URLCONF = "tests.test_dailyword.test_middleware"
-    settings.MIDDLEWARE.insert(
-        settings.MIDDLEWARE.index(
-            "django.middleware.clickjacking.XFrameOptionsMiddleware"
-        ),
-        "dailyword.middleware.IngressMiddleware",
-    )
+    settings.HOME_ASSISTANT_INGRESS_ENABLED = True
 
 
 @pytest.fixture
@@ -136,15 +130,11 @@ class TestCSRF:
 
 
 class TestDisabledByDefault:
-    """Verify the middleware has no effect when not in MIDDLEWARE (default config)."""
+    """Verify the middleware has no effect when HOME_ASSISTANT_INGRESS_ENABLED is False."""
 
     @pytest.fixture(autouse=True)
-    def _without_ingress_middleware(self, settings):
-        settings.MIDDLEWARE = [
-            m
-            for m in settings.MIDDLEWARE
-            if m != "dailyword.middleware.IngressMiddleware"
-        ]
+    def _without_ingress_enabled(self, settings):
+        settings.HOME_ASSISTANT_INGRESS_ENABLED = False
 
     def test_ingress_headers_ignored_when_disabled(self, client, db):
         response = client.get("/", **INGRESS_HEADERS)

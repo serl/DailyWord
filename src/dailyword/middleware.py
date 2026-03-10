@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 
@@ -13,7 +14,7 @@ class IngressMiddleware:
     def __call__(self, request):
         is_ingress = request.META.get("REMOTE_ADDR") == HA_SUPERVISOR_IP
 
-        if not is_ingress:
+        if not settings.HOME_ASSISTANT_INGRESS_ENABLED or not is_ingress:
             return self.get_response(request)
 
         # Set SCRIPT_NAME for correct URL generation in admin
