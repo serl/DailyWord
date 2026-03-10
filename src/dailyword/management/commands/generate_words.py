@@ -85,7 +85,7 @@ class Command(TyperCommand):
 
         try:
             return Dictionary.objects.get(pk=int(identifier))
-        except (Dictionary.DoesNotExist, ValueError):
+        except Dictionary.DoesNotExist, ValueError:
             pass
 
         raise CommandError(
