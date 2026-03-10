@@ -22,8 +22,14 @@ INGRESS_HEADERS = {
 
 
 @pytest.fixture(autouse=True)
-def _use_local_urls(settings):
+def _ingress_test_setup(settings):
     settings.ROOT_URLCONF = "tests.test_dailyword.test_middleware"
+    settings.MIDDLEWARE.insert(
+        settings.MIDDLEWARE.index(
+            "django.middleware.clickjacking.XFrameOptionsMiddleware"
+        ),
+        "dailyword.middleware.IngressMiddleware",
+    )
 
 
 @pytest.fixture
@@ -127,3 +133,20 @@ class TestCSRF:
     def test_post_blocked_without_ingress(self, csrf_client, db):
         response = csrf_client.post("/admin/login/", {"username": "x", "password": "y"})
         assert response.status_code == 403
+
+
+class TestDisabledByDefault:
+    """Verify the middleware has no effect when not in MIDDLEWARE (default config)."""
+
+    @pytest.fixture(autouse=True)
+    def _without_ingress_middleware(self, settings):
+        settings.MIDDLEWARE = [
+            m
+            for m in settings.MIDDLEWARE
+            if m != "dailyword.middleware.IngressMiddleware"
+        ]
+
+    def test_ingress_headers_ignored_when_disabled(self, client, db):
+        response = client.get("/", **INGRESS_HEADERS)
+        assert "X-Frame-Options" in response
+        assert not User.objects.filter(username="hauser").exists()

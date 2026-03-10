@@ -62,9 +62,17 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "dailyword.middleware.IngressMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+HOME_ASSISTANT_INGRESS_ENABLED = env.bool(
+    "HOME_ASSISTANT_INGRESS_ENABLED", default=False
+)
+if HOME_ASSISTANT_INGRESS_ENABLED:
+    MIDDLEWARE.insert(
+        MIDDLEWARE.index("django.middleware.clickjacking.XFrameOptionsMiddleware"),
+        "dailyword.middleware.IngressMiddleware",
+    )
 
 ROOT_URLCONF = "config.urls"
 

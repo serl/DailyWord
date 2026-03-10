@@ -12,6 +12,7 @@ if [[ $HOME_ASSISTANT_BUILD ]]; then
 
     export OPENROUTER_API_KEY="$(get_option "openrouter_api_key")"
     export OPENROUTER_TEXT_MODEL="$(get_option "openrouter_text_model")"
+    export HOME_ASSISTANT_INGRESS_ENABLED=true
 fi
 
 django-admin migrate --noinput
