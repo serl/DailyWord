@@ -10,11 +10,6 @@ from django.utils import translation
 
 @pytest.fixture(autouse=True)
 def set_test_settings(settings):
-    settings.STORAGES |= {
-        "staticfiles": {
-            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"
-        },
-    }
     settings.TEMPLATES = [
         template_conf
         | {

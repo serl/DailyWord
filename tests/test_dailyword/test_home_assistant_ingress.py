@@ -1,6 +1,7 @@
 import pytest
 from django.contrib import admin
 from django.contrib.auth.models import User
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.http import HttpResponse
 from django.test import Client
 from django.urls import path, reverse
@@ -12,9 +13,14 @@ def reverse_view(request):
     return HttpResponse(reverse("home"))
 
 
+def static_url_view(request):
+    return HttpResponse(staticfiles_storage.url("admin/css/base.css"))
+
+
 urlpatterns = [
     path("", lambda request: HttpResponse(), name="home"),
     path("reverse/", reverse_view, name="reverse"),
+    path("static-url/", static_url_view, name="static-url"),
     path("admin/", admin.site.urls),
 ]
 
@@ -28,7 +34,7 @@ INGRESS_HEADERS = {
 
 @pytest.fixture(autouse=True)
 def _ingress_test_setup(settings):
-    settings.ROOT_URLCONF = "tests.test_dailyword.test_middleware"
+    settings.ROOT_URLCONF = "tests.test_dailyword.test_home_assistant_ingress"
     settings.HOME_ASSISTANT_INGRESS_ENABLED = True
 
 
@@ -76,6 +82,16 @@ class TestScriptName:
         }
         response = client.get("/reverse/", **headers)
         assert response.content == b"/"
+
+
+class TestStaticURL:
+    def test_static_url_prefixed_for_ingress(self, client, db):
+        response = client.get("/static-url/", **INGRESS_HEADERS)
+        assert response.content.startswith(b"/api/hassio_ingress/abc123/static/")
+
+    def test_static_url_normal_without_ingress(self, client, db):
+        response = client.get("/static-url/")
+        assert response.content.startswith(b"/static/")
 
 
 class TestAutoLogin:
