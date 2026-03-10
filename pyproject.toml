@@ -51,13 +51,13 @@ DEP003 = [
 ]
 
 [tool.pytest]
-DJANGO_SETTINGS_MODULE = "config.settings"
-FAIL_INVALID_TEMPLATE_VARS = true
 filterwarnings = [
   "error",  # fail on warnings
   "ignore::pytest.PytestUnraisableExceptionWarning",
   "ignore:In Typer, only the parameter 'autocompletion' is supported:DeprecationWarning",  # https://github.com/django-commons/django-typer/issues/123
 ]
+DJANGO_SETTINGS_MODULE = "config.settings"
+FAIL_INVALID_TEMPLATE_VARS = true
 
 [tool.ruff]
 [tool.ruff.lint]
@@ -98,6 +98,9 @@ line-ending = "lf"
 disable = [
   "MD013",  # line length
 ]
+
+[tool.tombi.files]
+exclude = ["uv.lock"]
 
 [tool.uv]
 add-bounds = "exact"  # having exact versions in pyproject.toml works better with renovatebot to have clearer PRs

@@ -40,7 +40,7 @@ repos:
         args: [--mapping, '2', --sequence, '4', --offset, '2']
 
   - repo: https://github.com/tombi-toml/tombi-pre-commit
-    rev: v0.7.18
+    rev: v0.9.4
     hooks:
       - id: tombi-format
         args: [--offline]
