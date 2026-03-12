@@ -17,10 +17,15 @@ def static_url_view(request):
     return HttpResponse(staticfiles_storage.url("admin/css/base.css"))
 
 
+def check_flag_view(request):
+    return HttpResponse(str(request.is_ingress))
+
+
 urlpatterns = [
     path("", lambda request: HttpResponse(), name="home"),
     path("reverse/", reverse_view, name="reverse"),
     path("static-url/", static_url_view, name="static-url"),
+    path("check-flag/", check_flag_view, name="check-flag"),
     path("admin/", admin.site.urls),
 ]
 
@@ -34,7 +39,7 @@ INGRESS_HEADERS = {
 
 @pytest.fixture(autouse=True)
 def _ingress_test_setup(settings):
-    settings.ROOT_URLCONF = "tests.test_dailyword.test_home_assistant_ingress"
+    settings.ROOT_URLCONF = __name__
     settings.HOME_ASSISTANT_INGRESS_ENABLED = True
 
 
@@ -103,10 +108,10 @@ class TestAutoLogin:
         assert user.is_staff
         assert user.is_superuser
 
-    def test_skips_login_if_already_logged_in(self, client, db):
+    def test_skips_creation_if_already_exists(self, client, db):
         # First request creates and logs in the user
         client.get("/", **INGRESS_HEADERS)
-        # Second request should skip login (user already authenticated)
+        # Second request should skip creation
         client.get("/", **INGRESS_HEADERS)
 
         assert User.objects.filter(username="hauser").count() == 1
@@ -148,26 +153,12 @@ class TestCSRF:
 
 class TestIsIngressFlag:
     def test_set_true_for_ingress_request(self, client, db):
-        def check_flag(request):
-            return HttpResponse(str(request.is_ingress))
-
-        urlpatterns.append(path("check-flag/", check_flag, name="check-flag"))
-        try:
-            response = client.get("/check-flag/", **INGRESS_HEADERS)
-            assert response.content == b"True"
-        finally:
-            urlpatterns.pop()
+        response = client.get("/check-flag/", **INGRESS_HEADERS)
+        assert response.content == b"True"
 
     def test_set_false_for_direct_request(self, client, db):
-        def check_flag(request):
-            return HttpResponse(str(request.is_ingress))
-
-        urlpatterns.append(path("check-flag/", check_flag, name="check-flag"))
-        try:
-            response = client.get("/check-flag/")
-            assert response.content == b"False"
-        finally:
-            urlpatterns.pop()
+        response = client.get("/check-flag/")
+        assert response.content == b"False"
 
 
 class TestAdminUIHiding:
