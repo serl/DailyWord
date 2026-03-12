@@ -140,7 +140,7 @@ STORAGES = {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "dailyword.storage.IngressAwareStaticFilesStorage",
+        "BACKEND": "dailyword.storage.ScriptPrefixAwareCompressedManifestStaticFilesStorage",
     },
 }
 
