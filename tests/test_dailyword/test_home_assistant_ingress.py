@@ -175,26 +175,19 @@ class TestAdminUIHiding:
     def admin_user(self, db):
         return User.objects.create_superuser("direct_admin", password="testpass123")
 
-    def test_logout_hidden_for_ingress(self, client, db):
+    def test_header_hidden_for_ingress(self, client, db):
         response = client.get("/admin/", **INGRESS_HEADERS)
         content = response.content.decode()
+        assert "<header" not in content
         assert "Log out" not in content
-
-    def test_logout_shown_for_direct_access(self, client, admin_user):
-        client.login(username="direct_admin", password="testpass123")
-        response = client.get("/admin/")
-        content = response.content.decode()
-        assert "Log out" in content
-
-    def test_view_site_hidden_for_ingress(self, client, db):
-        response = client.get("/admin/", **INGRESS_HEADERS)
-        content = response.content.decode()
         assert "View site" not in content
 
-    def test_view_site_shown_for_direct_access(self, client, admin_user):
+    def test_header_shown_for_direct_access(self, client, admin_user):
         client.login(username="direct_admin", password="testpass123")
         response = client.get("/admin/")
         content = response.content.decode()
+        assert "<header" in content
+        assert "Log out" in content
         assert "View site" in content
 
     def test_auth_app_hidden_for_ingress(self, client, db):
