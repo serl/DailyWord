@@ -146,6 +146,71 @@ class TestCSRF:
         assert response.status_code == 403
 
 
+class TestIsIngressFlag:
+    def test_set_true_for_ingress_request(self, client, db):
+        def check_flag(request):
+            return HttpResponse(str(request.is_ingress))
+
+        urlpatterns.append(path("check-flag/", check_flag, name="check-flag"))
+        try:
+            response = client.get("/check-flag/", **INGRESS_HEADERS)
+            assert response.content == b"True"
+        finally:
+            urlpatterns.pop()
+
+    def test_set_false_for_direct_request(self, client, db):
+        def check_flag(request):
+            return HttpResponse(str(request.is_ingress))
+
+        urlpatterns.append(path("check-flag/", check_flag, name="check-flag"))
+        try:
+            response = client.get("/check-flag/")
+            assert response.content == b"False"
+        finally:
+            urlpatterns.pop()
+
+
+class TestAdminUIHiding:
+    @pytest.fixture
+    def admin_user(self, db):
+        return User.objects.create_superuser("direct_admin", password="testpass123")
+
+    def test_logout_hidden_for_ingress(self, client, db):
+        response = client.get("/admin/", **INGRESS_HEADERS)
+        content = response.content.decode()
+        assert "Log out" not in content
+
+    def test_logout_shown_for_direct_access(self, client, admin_user):
+        client.login(username="direct_admin", password="testpass123")
+        response = client.get("/admin/")
+        content = response.content.decode()
+        assert "Log out" in content
+
+    def test_view_site_hidden_for_ingress(self, client, db):
+        response = client.get("/admin/", **INGRESS_HEADERS)
+        content = response.content.decode()
+        assert "View site" not in content
+
+    def test_view_site_shown_for_direct_access(self, client, admin_user):
+        client.login(username="direct_admin", password="testpass123")
+        response = client.get("/admin/")
+        content = response.content.decode()
+        assert "View site" in content
+
+    def test_auth_app_hidden_for_ingress(self, client, db):
+        response = client.get("/admin/", **INGRESS_HEADERS)
+        content = response.content.decode()
+        assert "Users" not in content
+        assert "Groups" not in content
+
+    def test_auth_app_shown_for_direct_access(self, client, admin_user):
+        client.login(username="direct_admin", password="testpass123")
+        response = client.get("/admin/")
+        content = response.content.decode()
+        assert "Users" in content
+        assert "Groups" in content
+
+
 class TestDisabledByDefault:
     """Verify the middleware has no effect when HOME_ASSISTANT_INGRESS_ENABLED is False."""
 

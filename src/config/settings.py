@@ -43,7 +43,7 @@ SILENCED_SYSTEM_CHECKS = [
 
 # Application definition
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    "dailyword.admin_apps.DailyWordAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",

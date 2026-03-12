@@ -13,9 +13,13 @@ class IngressMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        is_ingress = request.META.get("REMOTE_ADDR") == HA_SUPERVISOR_IP
+        is_ingress = (
+            settings.HOME_ASSISTANT_INGRESS_ENABLED
+            and request.META.get("REMOTE_ADDR") == HA_SUPERVISOR_IP
+        )
+        request.is_ingress = is_ingress
 
-        if not settings.HOME_ASSISTANT_INGRESS_ENABLED or not is_ingress:
+        if not is_ingress:
             return self.get_response(request)
 
         # Set script prefix for correct URL generation (reverse(), {% url %}, {% static %})
