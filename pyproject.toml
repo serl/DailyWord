@@ -4,27 +4,27 @@ version = "0.1.0"
 description = "A Django project for daily word tracking"
 requires-python = "==3.14.*"
 dependencies = [
-  "django==6.0.2",
-  "django-typer[rich]==3.5.1",
-  "environs[django]==14.5.0",
-  "gunicorn==23.0.0",
+  "django==6.0.3",
+  "django-typer[rich]==3.6.4",
+  "environs[django]==14.6.0",
+  "gunicorn==25.1.0",
   "pillow==12.1.1",
-  "psycopg[binary]==3.3.2",
+  "psycopg[binary]==3.3.3",
   "requests==2.32.5",
-  "whitenoise[brotli]==6.11.0",
+  "whitenoise[brotli]==6.12.0",
 ]
 
 [dependency-groups]
 dev = [
   "deptry==0.24.0",
   "django-coverage-plugin==3.2.0",
-  "django-upgrade==1.29.1",
+  "django-upgrade==1.30.0",
   "pytest==9.0.2",
   "pytest-cov==7.0.0",
-  "pytest-django==4.11.1",
-  "pytest-github-actions-annotate-failures==0.3.0",
+  "pytest-django==4.12.0",
+  "pytest-github-actions-annotate-failures==0.4.0",
   "pytest-image-snapshot[pixelmatch]==0.4.5",
-  "ruff==0.14.11",
+  "ruff==0.15.4",
 ]
 
 [build-system]
@@ -51,13 +51,13 @@ DEP003 = [
 ]
 
 [tool.pytest]
-DJANGO_SETTINGS_MODULE = "config.settings"
-FAIL_INVALID_TEMPLATE_VARS = true
 filterwarnings = [
   "error",  # fail on warnings
   "ignore::pytest.PytestUnraisableExceptionWarning",
   "ignore:In Typer, only the parameter 'autocompletion' is supported:DeprecationWarning",  # https://github.com/django-commons/django-typer/issues/123
 ]
+DJANGO_SETTINGS_MODULE = "config.settings"
+FAIL_INVALID_TEMPLATE_VARS = true
 
 [tool.ruff]
 [tool.ruff.lint]
@@ -98,6 +98,9 @@ line-ending = "lf"
 disable = [
   "MD013",  # line length
 ]
+
+[tool.tombi.files]
+exclude = ["uv.lock"]
 
 [tool.uv]
 add-bounds = "exact"  # having exact versions in pyproject.toml works better with renovatebot to have clearer PRs

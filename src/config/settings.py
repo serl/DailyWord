@@ -43,7 +43,7 @@ SILENCED_SYSTEM_CHECKS = [
 
 # Application definition
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    "dailyword.admin_apps.DailyWordAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -62,8 +62,13 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "dailyword.middleware.IngressMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+HOME_ASSISTANT_INGRESS_ENABLED = env.bool(
+    "HOME_ASSISTANT_INGRESS_ENABLED", default=False
+)
 
 ROOT_URLCONF = "config.urls"
 
@@ -135,7 +140,7 @@ STORAGES = {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "dailyword.storage.ScriptPrefixAwareCompressedManifestStaticFilesStorage",
     },
 }
 

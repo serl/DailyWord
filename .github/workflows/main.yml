@@ -15,11 +15,11 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
 
-      - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
+      - uses: astral-sh/setup-uv@5a095e7a2014a4212f075830d4f7277575a9d098 # v7.3.1
         with:
           enable-cache: true
 
@@ -27,7 +27,7 @@ jobs:
         run: |
           uv sync --all-extras --dev --locked
 
-      - uses: j178/prek-action@91fd7d7cf70ae1dee9f4f44e7dfa5d1073fe6623 # v1.0.11
+      - uses: j178/prek-action@0bb87d7f00b0c99306c8bcb8b8beba1eb581c037 # v1.1.1
         with:
           extra-args: --all-files --verbose --skip no-commit-to-branch
 
@@ -40,7 +40,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:17-alpine
+        image: postgres:17-alpine@sha256:6f30057d31f5861b66f3545d4821f987aacf1dd920765f0acadea0c58ff975b1
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -58,11 +58,11 @@ jobs:
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/test
 
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
 
-      - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
+      - uses: astral-sh/setup-uv@5a095e7a2014a4212f075830d4f7277575a9d098 # v7.3.1
         with:
           enable-cache: true
 
@@ -103,7 +103,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
 
@@ -115,12 +115,12 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
 
       - name: Test build
-        uses: home-assistant/builder@2025.11.0 # zizmor: ignore[unpinned-uses] this needs to be pinned to a version, since it's used both for the action and the underlying Docker image
+        uses: home-assistant/builder@6cb4fd3d1338b6e22d0958a4bcb53e0965ea63b4 # 2026.02.1 # zizmor: ignore[unpinned-uses] this needs to be pinned to a version, since it's used both for the action and the underlying Docker image
         with:
           args: |
             --test \
