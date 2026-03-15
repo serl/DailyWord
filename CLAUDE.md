@@ -13,7 +13,7 @@ DailyWord is a Django application for learning new words with AI-generated defin
 - Database: PostgreSQL (production) / SQLite (development)
 - AI integration: OpenRouter API for word generation
 - Image rendering: Pillow (ImageDraw, no system dependencies)
-- Snapshot testing: syrupy
+- Snapshot testing: syrupy with custom `FuzzyPNGSnapshotExtension` (`tests/snapshot_extension.py`) for cross-platform pixel tolerance
 
 ## Commands
 

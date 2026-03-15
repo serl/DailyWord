@@ -2,15 +2,9 @@ import io
 
 import pytest
 from PIL import Image
-from syrupy.extensions.image import PNGImageSnapshotExtension
 
 from dailyword.models import Dictionary, Word
 from dailyword.rendering import generate_error_image, generate_word_image
-
-
-@pytest.fixture
-def snapshot_png(snapshot):
-    return snapshot.use_extension(PNGImageSnapshotExtension)
 
 
 @pytest.fixture
