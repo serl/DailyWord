@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 
 os.environ["DJANGO_DEBUG"] = "False"
 
@@ -53,18 +52,3 @@ def clear_url_script_prefix():
     """
 
     clear_script_prefix()
-
-
-@pytest.fixture
-def assert_image_snapshot(request, image_snapshot):
-    """Image snapshot with auto-derived path from test node ID."""
-
-    def _assert(img):
-        test_file = Path(request.node.fspath)
-        snapshot_dir = test_file.parent / "__snapshots__" / test_file.stem
-        # e.g. ['tests/.../test_rendering.py', 'TestClass', 'test_name']
-        parts = request.node.nodeid.split("::")
-        name = ".".join(parts[1:])
-        image_snapshot(img, snapshot_dir / f"{name}.png", threshold=True)
-
-    return _assert

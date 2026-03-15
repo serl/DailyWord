@@ -13,7 +13,7 @@ DailyWord is a Django application for learning new words with AI-generated defin
 - Database: PostgreSQL (production) / SQLite (development)
 - AI integration: OpenRouter API for word generation
 - Image rendering: Pillow (ImageDraw, no system dependencies)
-- Snapshot testing: pytest-image-snapshot (with pixelmatch for fuzzy comparison)
+- Snapshot testing: syrupy
 
 ## Commands
 
@@ -40,7 +40,7 @@ uv run pytest tests/test_dailyword/test_models.py
 uv run pytest tests/test_dailyword/test_models.py::test_function_name -v
 
 # Update snapshot tests after rendering changes
-uv run pytest --image-snapshot-update
+uv run pytest --snapshot-update
 
 # Code quality (runs all pre-commit hooks)
 prek run -a

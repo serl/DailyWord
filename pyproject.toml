@@ -23,8 +23,8 @@ dev = [
   "pytest-cov==7.0.0",
   "pytest-django==4.12.0",
   "pytest-github-actions-annotate-failures==0.4.0",
-  "pytest-image-snapshot[pixelmatch]==0.4.5",
   "ruff==0.15.4",
+  "syrupy==5.1.0",
 ]
 
 [build-system]
