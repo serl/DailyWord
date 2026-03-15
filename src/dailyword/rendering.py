@@ -25,7 +25,9 @@ def _load_font(
         filename = "DejaVuSans-Oblique.ttf"
     else:
         filename = "DejaVuSans.ttf"
-    return ImageFont.truetype(str(FONTS_DIR / filename), size)
+    return ImageFont.truetype(
+        str(FONTS_DIR / filename), size, layout_engine=ImageFont.Layout.BASIC
+    )
 
 
 def _wrap_text(text: str, font: ImageFont.FreeTypeFont, max_width: int) -> list[str]:
