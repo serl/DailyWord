@@ -79,12 +79,12 @@ jobs:
         run: |
           set -o pipefail
           echo 'stdout<<EOF' > "$GITHUB_OUTPUT"
-          uv run pytest --cov 2>&1 | tee -a "$GITHUB_OUTPUT"
+          uv run pytest --cov --verbose 2>&1 | tee -a "$GITHUB_OUTPUT"
           echo 'EOF' >> "$GITHUB_OUTPUT"
 
       - name: Upload snapshot diffs
         if: failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: snapshot-diffs
           path: snapshot_diffs/
