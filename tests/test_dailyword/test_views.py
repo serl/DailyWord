@@ -52,7 +52,6 @@ class TestDailyWordImageView:
     def test_returns_image_for_valid_dictionary(self, client, word):
         with patch("dailyword.views.date") as mock_date:
             mock_date.today.return_value = date(2024, 1, 1)
-            mock_date.side_effect = lambda *a, **kw: date(*a, **kw)
             response = client.get("/test-dictionary/512x256/")
 
         assert response.status_code == 200
@@ -66,7 +65,6 @@ class TestDailyWordImageView:
     def test_returns_grayscale_image(self, client, word):
         with patch("dailyword.views.date") as mock_date:
             mock_date.today.return_value = date(2024, 1, 1)
-            mock_date.side_effect = lambda *a, **kw: date(*a, **kw)
             response = client.get("/test-dictionary/512x256/")
 
         img = Image.open(io.BytesIO(response.content))
@@ -75,7 +73,6 @@ class TestDailyWordImageView:
     def test_respects_requested_dimensions(self, client, word):
         with patch("dailyword.views.date") as mock_date:
             mock_date.today.return_value = date(2024, 1, 1)
-            mock_date.side_effect = lambda *a, **kw: date(*a, **kw)
             response = client.get("/test-dictionary/800x600/")
 
         img = Image.open(io.BytesIO(response.content))
@@ -84,7 +81,6 @@ class TestDailyWordImageView:
     def test_clamps_small_dimensions(self, client, word):
         with patch("dailyword.views.date") as mock_date:
             mock_date.today.return_value = date(2024, 1, 1)
-            mock_date.side_effect = lambda *a, **kw: date(*a, **kw)
             response = client.get("/test-dictionary/10x10/")
 
         img = Image.open(io.BytesIO(response.content))
@@ -93,7 +89,6 @@ class TestDailyWordImageView:
     def test_clamps_large_dimensions(self, client, word):
         with patch("dailyword.views.date") as mock_date:
             mock_date.today.return_value = date(2024, 1, 1)
-            mock_date.side_effect = lambda *a, **kw: date(*a, **kw)
             response = client.get("/test-dictionary/10000x10000/")
 
         img = Image.open(io.BytesIO(response.content))
