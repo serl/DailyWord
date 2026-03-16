@@ -8,8 +8,8 @@ from dailyword.rendering import generate_error_image, generate_word_image
 
 
 @pytest.fixture
-def dictionary(db):
-    return Dictionary.objects.create(
+def dictionary():
+    return Dictionary(
         name="Test Dictionary",
         slug="test-dictionary",
         prompt="test prompt",
@@ -19,7 +19,7 @@ def dictionary(db):
 @pytest.fixture
 def word(dictionary):
     """Create a word with all fields populated."""
-    return Word.objects.create(
+    return Word(
         dictionary=dictionary,
         word="Ephemeral",
         definition="Lasting for a very short time.",
@@ -32,7 +32,7 @@ def word(dictionary):
 @pytest.fixture
 def word_minimal(dictionary):
     """Create a word with only required fields."""
-    return Word.objects.create(
+    return Word(
         dictionary=dictionary,
         word="Test",
         definition="A simple test word.",
@@ -42,7 +42,7 @@ def word_minimal(dictionary):
 @pytest.fixture
 def yesterday_word(dictionary):
     """Create a second word to use as yesterday's word."""
-    return Word.objects.create(
+    return Word(
         dictionary=dictionary,
         word="Serendipity",
         definition="The occurrence of finding pleasant things by chance.",
@@ -84,7 +84,7 @@ class TestGenerateWordImage:
         assert image_data == snapshot_png
 
     def test_with_yesterday_word_no_pronunciation(self, word, dictionary, snapshot_png):
-        yesterday = Word.objects.create(
+        yesterday = Word(
             dictionary=dictionary,
             word="Laconic",
             definition="Using very few words.",
@@ -100,7 +100,7 @@ class TestGenerateWordImage:
         assert image_data == snapshot_png
 
     def test_with_yesterday_word_no_example(self, word, dictionary, snapshot_png):
-        yesterday = Word.objects.create(
+        yesterday = Word(
             dictionary=dictionary,
             word="Laconic",
             definition="Using very few words.",
