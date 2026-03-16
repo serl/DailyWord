@@ -17,7 +17,10 @@ DIVIDER_GRAY = 180
 
 @lru_cache(maxsize=16)
 def _load_font(
-    bold: bool = False, italic: bool = False, size: int = 16
+    *,
+    size: int,
+    bold: bool = False,
+    italic: bool = False,
 ) -> ImageFont.FreeTypeFont:
     if bold:
         filename = "DejaVuSans-Bold.ttf"
@@ -63,75 +66,76 @@ def generate_word_image(
     draw = ImageDraw.Draw(img)
 
     # Responsive sizing
-    title_size = max(24, width // 15)
-    body_size = max(14, width // 25)
-    small_size = max(12, width // 30)
+    title_size = max(20, width // 17)
+    body_size = max(12, width // 30)
     padding = max(20, width // 20)
     max_text_width = width - 2 * padding
 
     title_font = _load_font(bold=True, size=title_size)
-    small_font = _load_font(size=small_size)
-    small_italic_font = _load_font(italic=True, size=small_size)
-    small_bold_font = _load_font(bold=True, size=small_size)
+    body_font = _load_font(size=body_size)
+    body_italic_font = _load_font(italic=True, size=body_size)
+    body_bold_font = _load_font(bold=True, size=body_size)
     label_font = _load_font(bold=True, size=body_size)
 
-    y = padding
+    y = padding / 2
 
     # Title line: Word  (part_of_speech)  /pronunciation/
     title_text = word.word
     draw.text((padding, y), title_text, font=title_font, fill=BLACK)
     title_bbox = title_font.getbbox(title_text)
-    meta_x = padding + title_bbox[2] + 10
+    meta_x = padding + title_bbox[2]
 
     meta_parts = []
     if word.part_of_speech:
-        meta_parts.append(f"({word.part_of_speech})")
+        meta_parts.append(f"{word.part_of_speech}")
     if word.pronunciation:
         meta_parts.append(f"/{word.pronunciation}/")
     if meta_parts:
-        meta_text = "  ".join(meta_parts)
+        meta_text = "   " + ("  ".join(meta_parts))
         # Vertically align metadata with title baseline
-        meta_y = y + (title_bbox[3] - small_font.getbbox(meta_text)[3])
-        draw.text((meta_x, meta_y), meta_text, font=small_font, fill=GRAY)
+        title_ascent = title_font.getmetrics()[0]
+        meta_ascent = body_font.getmetrics()[0]
+        meta_y = y + (title_ascent - meta_ascent)
+        draw.text((meta_x, meta_y), meta_text, font=body_font, fill=GRAY)
 
-    y += title_bbox[3] + body_size
+    y += title_bbox[3] + (body_size * 0.8)
 
     # Definition
     draw.text((padding, y), "Definition:", font=label_font, fill=BLACK)
     y += int(body_size * 1.5)
 
-    for line in _wrap_text(word.definition, small_font, max_text_width):
-        draw.text((padding, y), line, font=small_font, fill=BLACK)
-        y += int(small_size * 1.4)
+    for line in _wrap_text(word.definition, body_font, max_text_width):
+        draw.text((padding, y), line, font=body_font, fill=BLACK)
+        y += int(body_size * 1.4)
 
     # Example sentence
     if word.example_sentence:
-        y += body_size
+        y += int(body_size * 0.8)
         draw.text((padding, y), "Example:", font=label_font, fill=BLACK)
         y += int(body_size * 1.5)
 
-        for line in _wrap_text(
-            word.example_sentence, small_italic_font, max_text_width
-        ):
-            draw.text((padding, y), line, font=small_italic_font, fill=BLACK)
-            y += int(small_size * 1.4)
+        for line in _wrap_text(word.example_sentence, body_italic_font, max_text_width):
+            draw.text((padding, y), line, font=body_italic_font, fill=BLACK)
+            y += int(body_size * 1.4)
 
     # Yesterday's word section
     if yesterday_word:
-        y += body_size
+        y += int(body_size * 0.8)
         # Divider line
         draw.line([(padding, y), (width - padding, y)], fill=DIVIDER_GRAY, width=1)
-        y += int(small_size * 0.8)
+        y += int(body_size * 0.8)
 
         yesterday_title = f"Yesterday: {yesterday_word.word}"
         if yesterday_word.pronunciation:
             yesterday_title += f"  /{yesterday_word.pronunciation}/"
-        draw.text((padding, y), yesterday_title, font=small_bold_font, fill=GRAY)
-        y += int(small_size * 1.4)
+        draw.text((padding, y), yesterday_title, font=body_bold_font, fill=GRAY)
+        y += int(body_size * 1.4)
 
-        for line in _wrap_text(yesterday_word.definition, small_font, max_text_width):
-            draw.text((padding, y), line, font=small_font, fill=GRAY)
-            y += int(small_size * 1.4)
+        for line in _wrap_text(
+            yesterday_word.example_sentence, body_font, max_text_width
+        ):
+            draw.text((padding, y), line, font=body_font, fill=GRAY)
+            y += int(body_size * 1.4)
 
     buffer = io.BytesIO()
     img.save(buffer, format="PNG")
