@@ -83,6 +83,38 @@ class TestGenerateWordImage:
 
         assert image_data == snapshot_png
 
+    def test_with_yesterday_word_no_pronunciation(self, word, dictionary, snapshot_png):
+        yesterday = Word.objects.create(
+            dictionary=dictionary,
+            word="Laconic",
+            definition="Using very few words.",
+            example_sentence="His laconic reply ended the debate.",
+        )
+        image_data = generate_word_image(word, 800, 600, yesterday)
+
+        img = Image.open(io.BytesIO(image_data))
+        assert img.format == "PNG"
+        assert img.mode == "L"
+        assert img.size == (800, 600)
+
+        assert image_data == snapshot_png
+
+    def test_with_yesterday_word_no_example(self, word, dictionary, snapshot_png):
+        yesterday = Word.objects.create(
+            dictionary=dictionary,
+            word="Laconic",
+            definition="Using very few words.",
+            pronunciation="luh-KON-ik",
+        )
+        image_data = generate_word_image(word, 800, 600, yesterday)
+
+        img = Image.open(io.BytesIO(image_data))
+        assert img.format == "PNG"
+        assert img.mode == "L"
+        assert img.size == (800, 600)
+
+        assert image_data == snapshot_png
+
 
 class TestGenerateErrorImage:
     def test_generates_image_800x600(self, snapshot_png):
