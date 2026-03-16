@@ -85,12 +85,22 @@ class TestGenerateWordImage:
 
 
 class TestGenerateErrorImage:
-    def test_generates_image(self, snapshot_png):
+    def test_generates_image_800x600(self, snapshot_png):
         image_data = generate_error_image("Test error", 800, 600)
 
         img = Image.open(io.BytesIO(image_data))
         assert img.format == "PNG"
         assert img.mode == "L"
         assert img.size == (800, 600)
+
+        assert image_data == snapshot_png
+
+    def test_generates_image_960x540(self, snapshot_png):
+        image_data = generate_error_image("Test error", 960, 540)
+
+        img = Image.open(io.BytesIO(image_data))
+        assert img.format == "PNG"
+        assert img.mode == "L"
+        assert img.size == (960, 540)
 
         assert image_data == snapshot_png
