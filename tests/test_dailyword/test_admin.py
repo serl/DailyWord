@@ -50,6 +50,20 @@ class TestDictionaryAdmin:
         result = admin.word_count(dictionary)
         assert ">0</a>" in result
 
+    def test_todays_word_link(self, admin_site, dictionary, word):
+        admin = DictionaryAdmin(Dictionary, admin_site)
+        result = admin.todays_image(dictionary)
+        assert "<a" in result
+        assert f"/admin/dailyword/word/{word.pk}/change/" in result
+        assert "Example Word" in result
+        assert "<img" in result
+        assert f"/{dictionary.slug}/512x256/" in result
+
+    def test_todays_word_link_empty(self, admin_site, dictionary):
+        admin = DictionaryAdmin(Dictionary, admin_site)
+        result = admin.todays_image(dictionary)
+        assert result == "-"
+
 
 class TestAdminIntegration:
     def test_dictionary_list_page(self, admin_client, dictionary):
@@ -67,6 +81,17 @@ class TestAdminIntegration:
         assert "Test Dictionary" in content
         assert f"?dictionary__id__exact={dictionary.pk}" in content
         assert ">0</a>" in content
+
+    def test_dictionary_change_page_shows_today_section(
+        self, admin_client, dictionary, word
+    ):
+        response = admin_client.get(
+            f"/admin/dailyword/dictionary/{dictionary.id}/change/"
+        )
+        content = response.content.decode()
+        assert f"/admin/dailyword/word/{word.pk}/change/" in content
+        assert "<img" in content
+        assert f"/{dictionary.slug}/512x256" in content
 
     def test_word_list_page(self, admin_client, word):
         response = admin_client.get("/admin/dailyword/word/")
