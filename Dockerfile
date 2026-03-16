@@ -39,7 +39,6 @@ LABEL \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     gettext \
-    libcairo2 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN useradd --create-home --shell /bin/bash app

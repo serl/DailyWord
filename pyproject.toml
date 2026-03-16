@@ -4,7 +4,6 @@ version = "0.1.0"
 description = "A Django project for daily word tracking"
 requires-python = "==3.14.*"
 dependencies = [
-  "cairosvg==2.8.2",
   "django==6.0.3",
   "django-typer[rich]==3.6.4",
   "environs[django]==14.6.0",
@@ -25,6 +24,7 @@ dev = [
   "pytest-django==4.12.0",
   "pytest-github-actions-annotate-failures==0.4.0",
   "ruff==0.15.4",
+  "syrupy==5.1.0",
 ]
 
 [build-system]

@@ -1,14 +1,10 @@
-import io
-import textwrap
-from datetime import date
+from datetime import date, timedelta
 
-import cairosvg
 from django.http import HttpRequest, HttpResponse
-from django.template.loader import render_to_string
 from django.views import View
-from PIL import Image
 
-from .models import Dictionary, Word
+from .models import Dictionary
+from .rendering import generate_error_image, generate_word_image
 
 
 class PngResponse(HttpResponse):
@@ -18,115 +14,6 @@ class PngResponse(HttpResponse):
         kwargs["content_type"] = "image/png"
         super().__init__(content, **kwargs)
         self["Content-Length"] = len(content)
-
-
-def _wrap_text_for_svg(
-    text: str, chars_per_line: int, start_y: int, line_height: int
-) -> list[dict]:
-    """Wrap text and return list of {text, y} dicts for SVG rendering."""
-    lines = textwrap.wrap(text, width=chars_per_line)
-    return [
-        {"text": line, "y": start_y + i * line_height} for i, line in enumerate(lines)
-    ]
-
-
-def generate_word_image(word: Word, width: int, height: int) -> bytes:
-    """Generate a grayscale PNG image with all word details using SVG template."""
-    # Calculate responsive font sizes based on width
-    title_size = max(24, width // 15)
-    body_size = max(14, width // 25)
-    small_size = max(12, width // 30)
-    padding = max(20, width // 20)
-    line_height = int(small_size * 1.4)
-
-    # Calculate chars per line for text wrapping
-    avg_char_width = small_size * 0.6
-    max_text_width = width - 2 * padding - 10
-    chars_per_line = max(20, int(max_text_width / avg_char_width))
-
-    # Calculate vertical positions
-    y = padding + title_size
-
-    # Calculate inline x position for metadata (after the word)
-    word_width_estimate = len(word.word) * title_size * 0.6
-    meta_x = padding + word_width_estimate + 10
-
-    def_label_y = y + body_size + 12
-    def_start_y = def_label_y + line_height
-
-    definition_lines = _wrap_text_for_svg(
-        word.definition, chars_per_line, def_start_y, line_height
-    )
-    y = definition_lines[-1]["y"] if definition_lines else def_start_y
-
-    example_lines = []
-    example_label_y = 0
-    if word.example_sentence:
-        example_label_y = y + body_size + 12
-        example_start_y = example_label_y + line_height
-        example_text = f'"{word.example_sentence}"'
-        example_lines = _wrap_text_for_svg(
-            example_text, chars_per_line, example_start_y, line_height
-        )
-
-    # Render SVG template
-    svg_content = render_to_string(
-        "dailyword/word_image.svg",
-        {
-            "word": word,
-            "width": width,
-            "height": height,
-            "title_size": title_size,
-            "body_size": body_size,
-            "small_size": small_size,
-            "padding": padding,
-            "meta_x": meta_x,
-            "def_label_y": def_label_y,
-            "definition_lines": definition_lines,
-            "example_label_y": example_label_y,
-            "example_lines": example_lines,
-        },
-    )
-
-    # Convert SVG to PNG using cairosvg
-    png_data = cairosvg.svg2png(bytestring=svg_content.encode("utf-8"))
-
-    # Convert to grayscale
-    img = Image.open(io.BytesIO(png_data))
-    grayscale_img = img.convert("L")
-
-    # Save to bytes
-    buffer = io.BytesIO()
-    grayscale_img.save(buffer, format="PNG")
-    buffer.seek(0)
-    return buffer.getvalue()
-
-
-def generate_error_image(message: str, width: int, height: int) -> bytes:
-    """Generate a grayscale PNG error image with a 404 message."""
-    title_size = max(24, width // 10)
-    body_size = max(14, width // 25)
-
-    svg_content = render_to_string(
-        "dailyword/error_image.svg",
-        {
-            "width": width,
-            "height": height,
-            "title_size": title_size,
-            "body_size": body_size,
-            "message": message,
-        },
-    )
-
-    png_data = cairosvg.svg2png(bytestring=svg_content.encode("utf-8"))
-
-    img = Image.open(io.BytesIO(png_data))
-    grayscale_img = img.convert("L")
-
-    buffer = io.BytesIO()
-    grayscale_img.save(buffer, format="PNG")
-    buffer.seek(0)
-    return buffer.getvalue()
 
 
 class DailyWordImageView(View):
@@ -165,6 +52,9 @@ class DailyWordImageView(View):
             )
             return PngResponse(image_data)
 
-        image_data = generate_word_image(word, width, height)
+        yesterday = today - timedelta(days=1)
+        yesterday_word = dictionary.get_word_for_date(yesterday)
+
+        image_data = generate_word_image(word, width, height, yesterday_word)
 
         return PngResponse(image_data)
