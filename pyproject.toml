@@ -22,6 +22,7 @@ dev = [
   "pytest==9.0.2",
   "pytest-cov==7.0.0",
   "pytest-django==4.12.0",
+  "pytest-env==1.6.0",
   "pytest-github-actions-annotate-failures==0.4.0",
   "ruff==0.15.4",
   "syrupy==5.1.0",
@@ -58,6 +59,9 @@ filterwarnings = [
 ]
 DJANGO_SETTINGS_MODULE = "config.settings"
 FAIL_INVALID_TEMPLATE_VARS = true
+
+[tool.pytest_env]
+DJANGO_DEBUG = "false"
 
 [tool.ruff]
 [tool.ruff.lint]
