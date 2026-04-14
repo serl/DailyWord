@@ -8,7 +8,7 @@ dependencies = [
   "django-typer[rich]==3.7.0",
   "environs[django]==14.6.0",
   "gunicorn==25.3.0",
-  "pillow==12.1.1",
+  "pillow==12.2.0",
   "psycopg[binary]==3.3.3",
   "requests==2.33.0",
   "whitenoise[brotli]==6.12.0",
