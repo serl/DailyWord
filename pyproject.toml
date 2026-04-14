@@ -19,7 +19,7 @@ dev = [
   "deptry==0.24.0",
   "django-coverage-plugin==3.2.0",
   "django-upgrade==1.30.0",
-  "pytest==9.0.2",
+  "pytest==9.0.3",
   "pytest-cov==7.0.0",
   "pytest-django==4.12.0",
   "pytest-env==1.6.0",
