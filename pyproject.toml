@@ -5,12 +5,12 @@ description = "A Django project for daily word tracking"
 requires-python = "==3.14.*"
 dependencies = [
   "django==6.0.4",
-  "django-typer[rich]==3.7.0",
+  "django-typer[rich]==3.7.1",
   "environs[django]==14.6.0",
   "gunicorn==25.3.0",
   "pillow==12.2.0",
   "psycopg[binary]==3.3.3",
-  "requests==2.33.0",
+  "requests==2.33.1",
   "whitenoise[brotli]==6.12.0",
 ]
 
