@@ -7,7 +7,7 @@ dependencies = [
   "django==6.0.5",
   "django-typer[rich]==3.7.1",
   "environs[django]==14.6.0",
-  "gunicorn==25.3.0",
+  "gunicorn==26.0.0",
   "pillow==12.2.0",
   "psycopg[binary]==3.3.3",
   "requests==2.33.1",
