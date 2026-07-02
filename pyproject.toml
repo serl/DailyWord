@@ -6,7 +6,7 @@ requires-python = "==3.14.*"
 dependencies = [
   "django==6.0.6",
   "django-typer[rich]==3.7.3",
-  "environs[django]==14.6.0",
+  "environs[django]==15.0.1",
   "gunicorn==26.0.0",
   "pillow==12.2.0",
   "psycopg[binary]==3.3.4",
