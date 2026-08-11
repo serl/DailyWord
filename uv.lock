@@ -2,6 +2,10 @@ version = 1
 revision = 3
 requires-python = "==3.14.*"
 
+[options]
+exclude-newer = "0001-01-01T00:00:00Z" # This has no effect and is included for backwards compatibility when using relative exclude-newer values.
+exclude-newer-span = "P1W"
+
 [[package]]
 name = "annotated-doc"
 version = "0.0.4"
@@ -164,7 +168,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "django", specifier = "==6.0.7" },
-    { name = "django-typer", extras = ["rich"], specifier = "==3.7.4" },
+    { name = "django-typer", specifier = "==3.7.4" },
     { name = "environs", extras = ["django"], specifier = "==15.1.0" },
     { name = "gunicorn", specifier = "==26.0.0" },
     { name = "pillow", specifier = "==12.3.0" },
