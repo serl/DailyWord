@@ -108,3 +108,4 @@ exclude = ["uv.lock"]
 
 [tool.uv]
 add-bounds = "exact"  # having exact versions in pyproject.toml works better with renovatebot to have clearer PRs
+exclude-newer = "1 week"
