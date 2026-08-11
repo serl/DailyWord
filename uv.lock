@@ -164,8 +164,8 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "django", specifier = "==6.0.7" },
-    { name = "django-typer", extras = ["rich"], specifier = "==3.7.3" },
-    { name = "environs", extras = ["django"], specifier = "==15.0.1" },
+    { name = "django-typer", extras = ["rich"], specifier = "==3.7.4" },
+    { name = "environs", extras = ["django"], specifier = "==15.1.0" },
     { name = "gunicorn", specifier = "==26.0.0" },
     { name = "pillow", specifier = "==12.3.0" },
     { name = "psycopg", extras = ["binary"], specifier = "==3.3.4" },
@@ -268,16 +268,16 @@ wheels = [
 
 [[package]]
 name = "django-typer"
-version = "3.7.3"
+version = "3.7.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "django" },
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c7/de/8b38b5d7277e70a00adc6328532f174c632facdf99553b904f79e8aad026/django_typer-3.7.3.tar.gz", hash = "sha256:833059b0bddd5a0c68945c4963064ebb0662b54eec803f86b43904ba6038b777", size = 2977182, upload-time = "2026-05-24T14:33:55.391Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/72/76/a418d45143dc75e74fdd897f97cf843ddcbb28277d523c13371e2988df43/django_typer-3.7.4.tar.gz", hash = "sha256:8790afc368bad9c5b5173f880ee53fa796778910b91a5ab2ec721589cd2dacb3", size = 2977358, upload-time = "2026-07-31T23:13:48.653Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2f/ee/ff00e923a81de3ea95deac71667744079d1e2709249631a5484a57b7baf6/django_typer-3.7.3-py3-none-any.whl", hash = "sha256:2e6591e081117725ef036578ada407dd5882b0213a8aff821d50399854b2c6f1", size = 296863, upload-time = "2026-05-24T14:33:53.502Z" },
+    { url = "https://files.pythonhosted.org/packages/84/de/facf4c9d00044b1f1dd4a415a0b0f80650ab2b20bcefdcca219aaaf45586/django_typer-3.7.4-py3-none-any.whl", hash = "sha256:e1d66ecb9e2c57b5310eda985ee48025c96ae6e66e0f320329afb64c2a59cb54", size = 296847, upload-time = "2026-07-31T23:13:47.205Z" },
 ]
 
 [[package]]
@@ -294,15 +294,15 @@ wheels = [
 
 [[package]]
 name = "environs"
-version = "15.0.1"
+version = "15.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "marshmallow" },
     { name = "python-dotenv" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c5/f4/0273d36ab287a00866b69d4008e2ed2e479e4bc1eef4f8be2708f30ad15f/environs-15.0.1.tar.gz", hash = "sha256:638106bfb5d8c9a13ee51c23a9f2416baf9a748c8e537fec771102927cd02aa8", size = 36385, upload-time = "2026-04-06T14:15:12.676Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f8/d3/49f397f0f8ec988d0225ae1a72e8b45cfb4efb9425080a3e2d3b5cc4ff29/environs-15.1.0.tar.gz", hash = "sha256:268597f56e74d3304b8724db3d3d94db54427d7a7f17153e6b22520a6f0cfb9e", size = 36593, upload-time = "2026-08-01T02:21:06.354Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/49/fb/11e461eb609792f9f439398eb5f400fb4130ff2b9b59e0ceb346bb830a17/environs-15.0.1-py3-none-any.whl", hash = "sha256:a6aeb3e18d5649a4e74f62984f0d84ec869269cff588a43685272c72b5b8979b", size = 17357, upload-time = "2026-04-06T14:15:11.118Z" },
+    { url = "https://files.pythonhosted.org/packages/51/61/5e76e4827bb5fdbe42a88cf387ba1f875868e0e82e9768e2c25ca941d9ed/environs-15.1.0-py3-none-any.whl", hash = "sha256:6f1f83181caa98b1301a4fc96ace072e94b725409422ccd47b52fbc8d2ce7aa7", size = 17394, upload-time = "2026-08-01T02:21:05.135Z" },
 ]
 
 [package.optional-dependencies]
