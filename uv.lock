@@ -178,9 +178,9 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "django", specifier = "==6.0.7" },
-    { name = "django-typer", specifier = "==3.7.4" },
+    { name = "django-typer", specifier = "==3.8.0" },
     { name = "environs", extras = ["django"], specifier = "==15.1.0" },
-    { name = "gunicorn", specifier = "==26.0.0" },
+    { name = "gunicorn", specifier = "==26.2.0" },
     { name = "pillow", specifier = "==12.3.0" },
     { name = "psycopg", extras = ["binary"], specifier = "==3.3.4" },
     { name = "requests", specifier = "==2.34.2" },
@@ -283,16 +283,16 @@ wheels = [
 
 [[package]]
 name = "django-typer"
-version = "3.7.4"
+version = "3.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "django" },
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/72/76/a418d45143dc75e74fdd897f97cf843ddcbb28277d523c13371e2988df43/django_typer-3.7.4.tar.gz", hash = "sha256:8790afc368bad9c5b5173f880ee53fa796778910b91a5ab2ec721589cd2dacb3", size = 2977358, upload-time = "2026-07-31T23:13:48.653Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e3/f3/6165a27205ad24dab25f9dd527816df71b7b60920d7b480cb15d307187a3/django_typer-3.8.0.tar.gz", hash = "sha256:8fedd0aa684f43e23013831ad614a31a800ea8cb080a63b166b6af0bdfa0bd69", size = 2984323, upload-time = "2026-08-08T15:00:32.592Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/84/de/facf4c9d00044b1f1dd4a415a0b0f80650ab2b20bcefdcca219aaaf45586/django_typer-3.7.4-py3-none-any.whl", hash = "sha256:e1d66ecb9e2c57b5310eda985ee48025c96ae6e66e0f320329afb64c2a59cb54", size = 296847, upload-time = "2026-07-31T23:13:47.205Z" },
+    { url = "https://files.pythonhosted.org/packages/49/9a/a3c2bb405f3fcd695b2da762c273800a0e46d8b36eb38454e8cbf6d3355a/django_typer-3.8.0-py3-none-any.whl", hash = "sha256:332c885f74d7fb3ed2a35b92f8791baa61db6b238245528d6a9ee7f4e24ddbf7", size = 297345, upload-time = "2026-08-08T15:00:30.755Z" },
 ]
 
 [[package]]
@@ -329,14 +329,11 @@ django = [
 
 [[package]]
 name = "gunicorn"
-version = "26.0.0"
+version = "26.2.0"
 source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "packaging" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/6d/b7/a4a3f632f823e432ce6bc65f62961b7980c898c77f075a2f7118cb3846fe/gunicorn-26.0.0.tar.gz", hash = "sha256:ca9346f85e3a4aeeb64d491045c16b9a35647abd37ea15efe53080eb8b090baf", size = 727286, upload-time = "2026-05-05T06:38:25.529Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d9/8a/e4ef6ee11701b6cd64702848415ffb69eeff85cb388a3c6c7fe86f22f3f8/gunicorn-26.2.0.tar.gz", hash = "sha256:62b864895d9ebff0b2f9867ba04fe811c93121596540830c9c916d0769668447", size = 787921, upload-time = "2026-08-24T15:05:59.3Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e6/40/9c2384fc2be4ad25dd4a49decd5ad9ea5a3639814c11bd40ab77cb9f0a14/gunicorn-26.0.0-py3-none-any.whl", hash = "sha256:40233d26a5f0d1872916188c276e21641155111c2853f0c2cd55260aec0d24fc", size = 212009, upload-time = "2026-05-05T06:38:23.007Z" },
+    { url = "https://files.pythonhosted.org/packages/fe/85/7522a52e5e2f42faf1a129113ab63e548c42e103e9af395b7bfe65e403e2/gunicorn-26.2.0-py3-none-any.whl", hash = "sha256:bd249d0b3f7972f7432f0a6b6ff3b3ee2d129f70cd1ff6c09a9dd9e29a2b88e3", size = 228389, upload-time = "2026-08-24T15:05:57.67Z" },
 ]
 
 [[package]]
