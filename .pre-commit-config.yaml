@@ -51,6 +51,7 @@ repos:
     rev: v2.6.3
     hooks:
       - id: biome-check
+        args: [--error-on-warnings]
 
   - repo: https://github.com/astral-sh/uv-pre-commit
     rev: 0.13.6
