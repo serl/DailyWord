@@ -9,11 +9,10 @@
       "enabled": false
     },
     {
-      "description": "Builder ref doubles as the ghcr image tag; SHA/2026.06.0 image tags don't exist",
+      "description": "Builder needs to be updated manually",
       "matchManagers": ["github-actions"],
       "matchPackageNames": ["home-assistant/builder"],
-      "pinDigests": false,
-      "allowedVersions": "!/^2026\\.06\\.0$/"
+      "enabled": false
     }
   ]
 }
