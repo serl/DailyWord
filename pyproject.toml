@@ -18,14 +18,14 @@ dependencies = [
 dev = [
   "deptry==0.25.1",
   "django-coverage-plugin==3.2.2",
-  "django-upgrade==1.32.0",
+  "django-upgrade==1.33.0",
   "pytest==9.1.1",
   "pytest-cov==7.1.0",
   "pytest-django==4.14.0",
-  "pytest-env==1.7.0",
+  "pytest-env==1.8.2",
   "pytest-github-actions-annotate-failures==0.4.2",
-  "ruff==0.16.4",
-  "syrupy==6.0.0",
+  "ruff==0.17.3",
+  "syrupy==6.1.1",
 ]
 
 [build-system]
