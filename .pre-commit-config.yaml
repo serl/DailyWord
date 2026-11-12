@@ -34,7 +34,7 @@ repos:
         args: [--format, parsable, --strict]
 
   - repo: https://github.com/tombi-toml/tombi-pre-commit
-    rev: v1.9.6
+    rev: v1.10.0
     hooks:
       - id: tombi-format
         args: [--offline]
