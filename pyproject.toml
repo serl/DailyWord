@@ -106,6 +106,10 @@ disable = [
 [tool.tombi.files]
 exclude = ["uv.lock"]
 
+[tool.tombi.schema.format.rules]
+array-values-order.enabled = false
+table-keys-order.enabled = false
+
 [tool.uv]
 add-bounds = "exact"  # having exact versions in pyproject.toml works better with renovatebot to have clearer PRs
 exclude-newer = "1 week"
